@@ -6,9 +6,6 @@ import LoadingScreen from './components/LoadingScreen'
 import BudgetAdjustmentScreen from './components/BudgetAdjustmentScreen'
 import PriorityScreen from './components/PriorityScreen'
 import PriorityAnalysisScreen from './components/PriorityAnalysisScreen'
-import FlightCrisisScreen from './components/FlightCrisisScreen'
-import FlightCrisisScreenB from './components/FlightCrisisScreenB'
-import LuggageLossScreen from './components/LuggageLossScreen'
 
 const img20260531332022 = "https://www.figma.com/api/mcp/asset/6db77f7d-e5bb-40f6-8075-b7bb53efc517"
 const img20260531345061 = "/store-image.png"
@@ -18,7 +15,6 @@ const imgNotificationIconType = "https://www.figma.com/api/mcp/asset/54838c3b-2e
 export default function App() {
   const [urgency, setUrgency] = useState('low')
   const [activeTab, setActiveTab] = useState('rain')
-  const [highUrgencyTab, setHighUrgencyTab] = useState('flight')
   const [selectedOption, setSelectedOption] = useState('A')
   const [showBudgetCard, setShowBudgetCard] = useState(false)
   const [showLoading, setShowLoading] = useState(false)
@@ -63,16 +59,6 @@ export default function App() {
         >
           중긴박
         </button>
-        <button
-          onClick={() => setUrgency('high')}
-          className={`flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-medium transition-all ${
-            urgency === 'high'
-              ? 'bg-white text-black shadow-md'
-              : 'bg-gray-200 text-gray-600'
-          }`}
-        >
-          고긴박
-        </button>
       </div>
 
       {/* Tabs */}
@@ -80,35 +66,6 @@ export default function App() {
         <div className="flex gap-1.5 w-full max-w-md bg-gray-200 p-1.5 rounded-[20px]">
           <button className="flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-medium bg-white text-black shadow-md">
             예산 지출 초과
-          </button>
-        </div>
-      ) : urgency === 'high' ? (
-        <div className="flex gap-1.5 w-full max-w-md bg-gray-200 p-1.5 rounded-[20px]">
-          <button
-            onClick={() => {
-              setHighUrgencyTab('flight')
-              setSelectedOption('A')
-            }}
-            className={`flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-medium transition-all ${
-              highUrgencyTab === 'flight'
-                ? 'bg-white text-black shadow-md'
-                : 'bg-gray-200 text-gray-600'
-            }`}
-          >
-            ✈️ 항공편 놓칠 위기
-          </button>
-          <button
-            onClick={() => {
-              setHighUrgencyTab('luggage')
-              setSelectedOption('A')
-            }}
-            className={`flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-medium transition-all ${
-              highUrgencyTab === 'luggage'
-                ? 'bg-white text-black shadow-md'
-                : 'bg-gray-200 text-gray-600'
-            }`}
-          >
-            🧳 수하물 분실
           </button>
         </div>
       ) : (
@@ -180,7 +137,7 @@ export default function App() {
           }}>
             {/* Content */}
             <div className={`absolute inset-y-0 ${(showBudgetCard || (urgency === 'high' && selectedOption === 'A')) ? 'inset-x-0 flex items-start justify-start' : 'flex items-center justify-center inset-x-[16px]'}`}>
-              {((activeTab === 'rain' && selectedOption === 'A') || (urgency === 'medium' && selectedOption === 'B')) && (
+              {((urgency === 'low' && activeTab === 'rain' && selectedOption === 'A') || (urgency === 'medium' && (selectedOption === 'A' || selectedOption === 'B'))) && (
                 <>
                   {!showBudgetCard && (
                     <Notification
@@ -228,7 +185,7 @@ export default function App() {
                 />
               )}
               {activeTab === 'restaurant' && selectedOption === 'B' && (
-                <div className="absolute bottom-[80px]">
+                <div className="absolute bottom-[80px] w-full flex justify-center">
                   <MapCard
                     title="식당 웨이팅이 1시간 30분 예상돼요"
                     description="대신 갈 수 있는 근처 식당을 안내해 드릴게요."
@@ -238,15 +195,6 @@ export default function App() {
                     rating="4.0"
                   />
                 </div>
-              )}
-              {urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'A' && (
-                <FlightCrisisScreen />
-              )}
-              {urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'B' && (
-                <FlightCrisisScreenB />
-              )}
-              {urgency === 'high' && highUrgencyTab === 'luggage' && selectedOption === 'A' && (
-                <LuggageLossScreen />
               )}
             </div>
 
