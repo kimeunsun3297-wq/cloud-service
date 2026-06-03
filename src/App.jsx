@@ -110,7 +110,14 @@ export default function App() {
       {/* Option Buttons */}
       <div className="flex gap-1.5 w-full max-w-md bg-gray-200 p-1.5 rounded-[20px]">
         <button
-          onClick={() => setSelectedOption('A')}
+          onClick={() => {
+            setSelectedOption('A')
+            setShowBudgetCard(false)
+            setShowLoading(false)
+            setShowBudgetAdjustment(false)
+            setShowPriorityScreen(false)
+            setShowPriorityAnalysis(false)
+          }}
           className={`flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-semibold transition-all ${
             selectedOption === 'A'
               ? 'bg-blue-500 text-white shadow-md'
@@ -120,7 +127,14 @@ export default function App() {
           A안
         </button>
         <button
-          onClick={() => setSelectedOption('B')}
+          onClick={() => {
+            setSelectedOption('B')
+            setShowBudgetCard(false)
+            setShowLoading(false)
+            setShowBudgetAdjustment(false)
+            setShowPriorityScreen(false)
+            setShowPriorityAnalysis(false)
+          }}
           className={`flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-semibold transition-all ${
             selectedOption === 'B'
               ? 'bg-blue-500 text-white shadow-md'
