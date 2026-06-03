@@ -177,14 +177,14 @@ export default function App() {
                   />
                 </div>
               )}
-              {activeTab === 'restaurant' && selectedOption === 'A' && (
+              {activeTab === 'restaurant' && selectedOption === 'A' && urgency === 'low' && (
                 <Notification
                   subtitle="여행 AI 서비스"
                   title="식당 웨이팅이 1시간 30분 예상돼요"
                   message="대신 갈 수 있는 근처 식당을 찾아 드릴께요"
                 />
               )}
-              {activeTab === 'restaurant' && selectedOption === 'B' && (
+              {activeTab === 'restaurant' && selectedOption === 'B' && urgency === 'low' && (
                 <div className="absolute bottom-[80px] w-full flex justify-center">
                   <MapCard
                     title="식당 웨이팅이 1시간 30분 예상돼요"
