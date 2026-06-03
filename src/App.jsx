@@ -167,7 +167,7 @@ export default function App() {
       </div>
 
       {/* iPhone Mockup */}
-      <div className="relative w-full max-w-[280px]" style={{ aspectRatio: '375/812', height: 'calc(100vh - 200px)' }}>
+      <div className="relative w-[280px]" style={{ aspectRatio: '375/812' }}>
         {/* iPhone Frame */}
         <div className="absolute inset-0 bg-black rounded-[30px] p-1 shadow-2xl">
 
