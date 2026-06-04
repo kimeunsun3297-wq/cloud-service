@@ -8,7 +8,7 @@ import PriorityScreen from './components/PriorityScreen'
 import PriorityAnalysisScreen from './components/PriorityAnalysisScreen'
 import FlightCrisisScreen from './components/FlightCrisisScreen'
 import FlightCrisisScreenB from './components/FlightCrisisScreenB'
-import LuggageLossScreen from './components/LuggageLossScreen'
+import PushNotificationScreen from './components/PushNotificationScreen'
 
 const img20260531332022 = "https://www.figma.com/api/mcp/asset/6db77f7d-e5bb-40f6-8075-b7bb53efc517"
 const img20260531345061 = "/store-image.png"
@@ -25,9 +25,15 @@ export default function App() {
   const [showBudgetAdjustment, setShowBudgetAdjustment] = useState(false)
   const [showPriorityScreen, setShowPriorityScreen] = useState(false)
   const [showPriorityAnalysis, setShowPriorityAnalysis] = useState(false)
+  const [showPushNotification, setShowPushNotification] = useState(false)
+  const [showFlightCrisisScreen, setShowFlightCrisisScreen] = useState(false)
+  const [showPushNotificationB, setShowPushNotificationB] = useState(false)
+  const [showFlightCrisisScreenB, setShowFlightCrisisScreenB] = useState(false)
   const [selectedPriorities, setSelectedPriorities] = useState(null)
+  const [showEmptyScreen, setShowEmptyScreen] = useState(false)
 
   useEffect(() => {
+    setShowEmptyScreen(false)
     if (urgency === 'medium' && activeTab === 'rain' && (selectedOption === 'A' || selectedOption === 'B')) {
       setShowBudgetCard(false)
       const timer = setTimeout(() => {
@@ -38,6 +44,24 @@ export default function App() {
       setShowBudgetCard(false)
     }
   }, [urgency, activeTab, selectedOption])
+
+  useEffect(() => {
+    if (urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'A') {
+      setShowPushNotification(true)
+      setShowFlightCrisisScreen(false)
+    } else {
+      setShowPushNotification(false)
+    }
+  }, [urgency, highUrgencyTab, selectedOption])
+
+  useEffect(() => {
+    if (urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'B') {
+      setShowPushNotificationB(true)
+      setShowFlightCrisisScreenB(false)
+    } else {
+      setShowPushNotificationB(false)
+    }
+  }, [urgency, highUrgencyTab, selectedOption])
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 p-1 gap-1 overflow-hidden">
@@ -84,31 +108,8 @@ export default function App() {
         </div>
       ) : urgency === 'high' ? (
         <div className="flex gap-1.5 w-full max-w-md bg-gray-200 p-1.5 rounded-[20px]">
-          <button
-            onClick={() => {
-              setHighUrgencyTab('flight')
-              setSelectedOption('A')
-            }}
-            className={`flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-medium transition-all ${
-              highUrgencyTab === 'flight'
-                ? 'bg-white text-black shadow-md'
-                : 'bg-gray-200 text-gray-600'
-            }`}
-          >
+          <button className="flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-medium bg-white text-black shadow-md">
             ✈️ 항공편 놓칠 위기
-          </button>
-          <button
-            onClick={() => {
-              setHighUrgencyTab('luggage')
-              setSelectedOption('A')
-            }}
-            className={`flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-medium transition-all ${
-              highUrgencyTab === 'luggage'
-                ? 'bg-white text-black shadow-md'
-                : 'bg-gray-200 text-gray-600'
-            }`}
-          >
-            🧳 수하물 분실
           </button>
         </div>
       ) : (
@@ -125,19 +126,6 @@ export default function App() {
             }`}
           >
             ☔ 비 예보
-          </button>
-          <button
-            onClick={() => {
-              setActiveTab('restaurant')
-              setSelectedOption('A')
-            }}
-            className={`flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-medium transition-all ${
-              activeTab === 'restaurant'
-                ? 'bg-white text-black shadow-md'
-                : 'bg-gray-200 text-gray-600'
-            }`}
-          >
-            🍽️ 식당 웨이팅
           </button>
         </div>
       )}
@@ -179,8 +167,22 @@ export default function App() {
             backgroundRepeat: 'no-repeat'
           }}>
             {/* Content */}
-            <div className={`absolute inset-y-0 ${(showBudgetCard || (urgency === 'high' && selectedOption === 'A')) ? 'inset-x-0 flex items-start justify-start' : 'flex items-center justify-center inset-x-[16px]'}`}>
-              {((activeTab === 'rain' && selectedOption === 'A') || (urgency === 'medium' && selectedOption === 'B')) && (
+            <div className={`absolute inset-y-0 ${showEmptyScreen ? 'inset-x-0 flex items-center justify-center' : (showBudgetCard || (urgency === 'high' && (selectedOption === 'A' || selectedOption === 'B'))) ? 'inset-x-0 flex items-start justify-start' : 'flex items-center justify-center inset-x-[16px]'}`}>
+              {showEmptyScreen && (
+                <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-[#ffffff]">
+                  {selectedOption === 'A' && (
+                    <p className="text-[16px] font-['Pretendard'] font-semibold text-[#1d1d1f] text-center px-[32px]">
+                      수고 하셨습니다. B안을 탭해<br />프로토타입을 진행해 주세요.
+                    </p>
+                  )}
+                  {selectedOption === 'B' && (
+                    <p className="text-[16px] font-['Pretendard'] font-semibold text-[#1d1d1f] text-center px-[32px]">
+                      수고 하셨습니다.<br />위에 고긴박의 A안을 탭해<br />프로토타입을 진행해 주세요.
+                    </p>
+                  )}
+                </div>
+              )}
+              {!showEmptyScreen && ((activeTab === 'rain' && selectedOption === 'A' && urgency === 'low') || (urgency === 'medium' && (selectedOption === 'A' || selectedOption === 'B'))) && !showPushNotification && (
                 <>
                   {!showBudgetCard && (
                     <Notification
@@ -200,12 +202,12 @@ export default function App() {
                     />
                   )}
                   {showLoading && !showBudgetAdjustment && <LoadingScreen onLoadingComplete={() => setShowBudgetAdjustment(true)} />}
-                  {showBudgetAdjustment && !showPriorityAnalysis && <BudgetAdjustmentScreen selectedPriorities={selectedPriorities} onBack={() => setShowBudgetAdjustment(false)} />}
+                  {showBudgetAdjustment && !showPriorityAnalysis && <BudgetAdjustmentScreen selectedPriorities={selectedPriorities} onBack={() => { setShowBudgetAdjustment(false); setShowBudgetCard(false); setShowLoading(false); setShowEmptyScreen(true); }} />}
                   {showPriorityScreen && !showPriorityAnalysis && <PriorityScreen onBack={() => setShowPriorityScreen(false)} onComplete={(priorities) => { setSelectedPriorities(priorities); setShowPriorityAnalysis(true); }} />}
                   {showPriorityAnalysis && <PriorityAnalysisScreen selectedPriorities={selectedPriorities} onComplete={() => { setShowPriorityScreen(false); setShowPriorityAnalysis(false); setShowBudgetAdjustment(true); }} />}
                 </>
               )}
-              {activeTab === 'rain' && selectedOption === 'B' && urgency !== 'medium' && (
+              {activeTab === 'rain' && selectedOption === 'B' && urgency === 'low' && (
                 <div className="absolute bottom-[80px] w-full flex justify-center">
                   <MapCard
                     title="30분 뒤 강한 비 예보가 있어요"
@@ -239,14 +241,23 @@ export default function App() {
                   />
                 </div>
               )}
-              {urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'A' && (
+              {showPushNotification && !showFlightCrisisScreen && (
+                <PushNotificationScreen
+                  onTap={() => setShowFlightCrisisScreen(true)}
+                  urgency="high"
+                />
+              )}
+              {showFlightCrisisScreen && urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'A' && (
                 <FlightCrisisScreen />
               )}
-              {urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'B' && (
-                <FlightCrisisScreenB />
+              {showPushNotificationB && !showFlightCrisisScreenB && (
+                <PushNotificationScreen
+                  onTap={() => setShowFlightCrisisScreenB(true)}
+                  urgency="high"
+                />
               )}
-              {urgency === 'high' && highUrgencyTab === 'luggage' && selectedOption === 'A' && (
-                <LuggageLossScreen />
+              {showFlightCrisisScreenB && urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'B' && (
+                <FlightCrisisScreenB />
               )}
             </div>
 

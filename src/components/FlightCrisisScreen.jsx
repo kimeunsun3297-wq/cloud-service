@@ -152,7 +152,7 @@ export default function FlightCrisisScreen() {
   }
 
   return (
-    <div className="absolute inset-0 flex flex-col bg-white">
+    <div className="absolute inset-0 flex flex-col" style={{ backgroundColor: 'red' }}>
       {/* Status Bar */}
       <div className="absolute top-0 left-0 right-0 w-full h-[32px] bg-white flex items-center justify-between px-[16px]">
         <p className="text-[10px] font-semibold text-black leading-[14px] tracking-[-0.23px]">9:41</p>
@@ -178,7 +178,7 @@ export default function FlightCrisisScreen() {
         <div className="w-[24px] h-[24px]">
           <img src={imgEpBack} alt="back" className="w-full h-full" />
         </div>
-        <p className="text-[16px] font-['Pretendard'] font-semibold text-[#1d1d1f] tracking-[-0.05px]">
+        <p className="text-[14px] font-['Pretendard'] font-semibold text-[#1d1d1f] tracking-[-0.05px]">
           AI 어시스턴트와 대화중
         </p>
         <div className="w-[24px] h-[24px]">
@@ -187,7 +187,7 @@ export default function FlightCrisisScreen() {
       </div>
 
       {/* Chat Content */}
-      <div ref={chatContentRef} className="flex-1 overflow-y-auto flex flex-col gap-[12px] pt-[24px] pb-[80px] mt-[88px] bg-white">
+      <div ref={chatContentRef} className="flex-1 overflow-y-auto flex flex-col gap-[12px] pt-[24px] pb-[80px] mt-[88px]" style={{ backgroundColor: '#F9F9FB' }}>
         {/* Date Divider */}
         <div className="flex gap-[8px] items-center justify-center px-[16px]">
           <div className="flex-1 h-[0.5px] bg-[#d0d0d0]" />
@@ -213,13 +213,15 @@ export default function FlightCrisisScreen() {
           {/* Message */}
           <div className="flex flex-col gap-[10px] flex-1">
             <div className="flex flex-col gap-[2px]">
-              <p className="text-[15px] font-['Pretendard'] font-bold text-[#1d1d1f] leading-[1.3] min-h-[40px]">
-                {displayedTitle.split('\n').map((line, idx) => (
-                  <span key={idx}>
-                    {line}
-                    {idx < displayedTitle.split('\n').length - 1 && <br />}
-                  </span>
-                ))}
+              <p className="text-[15px] font-['Pretendard'] font-bold leading-[1.3] min-h-[40px]">
+                <span className="gradient-text inline-block">
+                  {displayedTitle.split('\n').map((line, idx) => (
+                    <span key={idx}>
+                      {line}
+                      {idx < displayedTitle.split('\n').length - 1 && <br />}
+                    </span>
+                  ))}
+                </span>
               </p>
               <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
                 {displayedSubtitle}
@@ -288,7 +290,7 @@ export default function FlightCrisisScreen() {
                 </p>
 
                 {/* Buttons */}
-                <div className="flex gap-[6px] animate-fadeIn">
+                <div className="flex gap-[6px] animate-fadeIn pt-[12px]">
                   <button className="flex-1 h-[34px] bg-white border border-[#e8e8e8] rounded-[999px] flex items-center justify-center hover:bg-[#fafafa] transition-all">
                     <p className="text-[11px] font-['Pretendard'] font-semibold text-[#888888] tracking-[-0.05px]">
                       다른 방법 찾기
@@ -344,7 +346,7 @@ export default function FlightCrisisScreen() {
                 </p>
 
                 {/* Vehicle Info */}
-                <div className="flex flex-col gap-[10px]">
+                <div className="flex flex-col gap-[24px]">
                   <div className="flex gap-[8px] items-center">
                     <div className="w-[18px] h-[18px] flex-shrink-0">
                       <img src={imgBoxiconsLocation} alt="taxi" className="w-full h-full" />
