@@ -218,7 +218,7 @@ export default function FlightCrisisScreen() {
             {/* Chat Bubble with Recommendation */}
             <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px]">
               <p className="text-[13px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
-                택시로 이동하시는 게<br />가장 안전해요<br />지금 바로 호출 할까요?
+                택시로 이동하시는게 가장 안전해요<br />지금 바로 호출 할까요?
               </p>
 
               {/* Options */}
