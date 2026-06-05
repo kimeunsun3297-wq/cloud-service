@@ -86,6 +86,8 @@ export default function FlightCrisisScreen() {
       setTimeout(() => setShowInfoBox(true), 700)
       // Show buttons after info box
       setTimeout(() => setShowChatButtons(true), 1400)
+      // Show chat message (taxi recommendation) last
+      setTimeout(() => setShowChatMessage(true), 2100)
     }, 2500)
 
     return () => {
@@ -175,7 +177,7 @@ export default function FlightCrisisScreen() {
         <div className="w-[24px] h-[24px]">
           <img src={imgEpBack} alt="back" className="w-full h-full" />
         </div>
-        <p className="text-[14px] font-['Pretendard'] font-semibold text-[#1d1d1f] tracking-[-0.05px]">
+        <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f] tracking-[-0.05px]">
           AI 어시스턴트와 대화중
         </p>
         <div className="w-[24px] h-[24px]">
@@ -216,8 +218,9 @@ export default function FlightCrisisScreen() {
             </div>
 
             {/* Chat Bubble with Recommendation */}
-            <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px]">
-              <p className="text-[13px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
+            {showChatMessage && (
+            <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px] w-[90%] animate-fadeIn w-[70%]">
+              <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
                 택시로 이동하시는게 가장 안전해요<br />지금 바로 호출 할까요?
               </p>
 
@@ -275,6 +278,7 @@ export default function FlightCrisisScreen() {
               </div>
               )}
             </div>
+            )}
 
             {/* Timestamp */}
             <p className="text-[10px] font-['Pretendard'] font-normal text-[#999999] tracking-[-0.05px]">
@@ -287,8 +291,8 @@ export default function FlightCrisisScreen() {
         {/* User Message */}
         {showMessages.userMessage && (
         <div className="flex flex-col gap-[6px] items-end animate-fadeIn px-[16px]">
-            <div className="bg-[#007aff] rounded-l-[14px] rounded-br-[14px] px-[16px] py-[12px] flex items-center justify-center max-w-[200px]">
-              <p className="text-[13px] font-['Pretendard'] font-semibold text-white leading-[1.4]">
+            <div className="bg-[#007aff] rounded-l-[14px] rounded-br-[14px] px-[16px] py-[8px] flex items-center justify-center max-w-[200px]">
+              <p className="text-[12px] font-['Pretendard'] font-semibold text-white leading-[1.4]">
                 택시 호출 해줘
               </p>
             </div>
@@ -302,18 +306,18 @@ export default function FlightCrisisScreen() {
         {showMessages.taxiBooked && (
         <div className="animate-fadeIn px-[16px]">
             <div className="flex flex-col gap-[10px]">
-              <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px]">
-                <p className="text-[13px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
+              <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px] w-[90%]">
+                <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
                   택시 호출 완료 했어요
                 </p>
 
                 {/* Vehicle Info */}
-                <div className="flex flex-col gap-[24px]">
+                <div className="flex flex-col gap-[12px]">
                   <div className="flex flex-col gap-[2px]">
-                    <p className="text-[10px] font-['Pretendard'] font-semibold text-[#1d1d1f]">
+                    <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f]">
                       차량 정보
                     </p>
-                    <p className="text-[9px] font-['Pretendard'] font-medium text-[#888888]">
+                    <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888]">
                       도요타 크라운 · 백색 · 品川 123 さ 45-67
                     </p>
                   </div>
@@ -357,10 +361,10 @@ export default function FlightCrisisScreen() {
         {/* AI Response - On the way */}
         {showMessages.onTheWay && (
         <div className="animate-fadeIn px-[16px]">
-            <div className="flex flex-col gap-[10px]">
-              <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px]">
-                <p className="text-[13px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
-                  나리타 공항으로 이동 중
+            <div className="flex flex-col gap-[6px]">
+              <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px] w-[90%]">
+                <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
+                  나리타 공항으로 이동 중<br />도착 5분 전에 다시 안내 드릴께요
                 </p>
 
                 {/* Info Box */}
@@ -382,10 +386,6 @@ export default function FlightCrisisScreen() {
                     </p>
                   </div>
                 </div>
-
-                <p className="text-[10px] font-['Pretendard'] font-semibold text-[#007aff] tracking-[-0.05px]">
-                  도착 5분 전에 다시 안내 드릴께요
-                </p>
               </div>
               <p className="text-[10px] font-['Pretendard'] font-normal text-[#999999] tracking-[-0.05px]">
                 {timestamps.onTheWay}

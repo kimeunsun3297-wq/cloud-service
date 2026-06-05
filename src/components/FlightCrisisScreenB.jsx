@@ -91,12 +91,12 @@ export default function FlightCrisisScreenB() {
     // Show chat bubble after typing animation completes (approximately 2.5 seconds)
     const timer1 = setTimeout(() => {
       setShowMessages(prev => ({ ...prev, chatBubble: true }))
-      // Show message after bubble appears (adjusted for 1.0s animation)
-      setTimeout(() => setShowChatMessage(true), 400)
-      // Show info box after message
-      setTimeout(() => setShowInfoBox(true), 1100)
+      // Show info box after bubble
+      setTimeout(() => setShowInfoBox(true), 700)
       // Show buttons after info box
-      setTimeout(() => setShowChatButtons(true), 1800)
+      setTimeout(() => setShowChatButtons(true), 1400)
+      // Show chat message (taxi recommendation) last
+      setTimeout(() => setShowChatMessage(true), 2100)
     }, 2500)
 
     return () => {
@@ -114,9 +114,9 @@ export default function FlightCrisisScreenB() {
         const clientHeight = chatContentRef.current.clientHeight
         // Scroll to center: scrollHeight - (clientHeight / 2)
         chatContentRef.current.scrollTop = scrollHeight - clientHeight / 2
-      }, 100)
+      }, 0)
     }
-  }, [showMessages.userMessage, showMessages.taxiBooked, showMessages.onTheWay, showMessages.taxiComplete, showMessages.taxiMoving])
+  }, [showMessages.userMessage, showMessages.taxiBooked, showMessages.onTheWay, showMessages.taxiComplete, showMessages.taxiMoving, showTaxiLoading])
 
   // Handle taxi button click - show user message and loading
   const handleTaxiClick = () => {
@@ -145,7 +145,7 @@ export default function FlightCrisisScreenB() {
     if (showTaxiLoading && completedSteps < 4) {
       const timer = setTimeout(() => {
         setCompletedSteps(prev => prev + 1)
-      }, 800)
+      }, 1200)
       return () => clearTimeout(timer)
     }
   }, [showTaxiLoading, completedSteps])
@@ -153,17 +153,17 @@ export default function FlightCrisisScreenB() {
   // Show taxi complete and moving messages after loading completes
   useEffect(() => {
     if (completedSteps === 4 && !showMessages.taxiMoving) {
-      // Show taxi complete message after 1.5 seconds
+      // Show taxi complete message after 0.8 seconds
       const taxiCompleteTimer = setTimeout(() => {
         setShowMessages(prev => ({ ...prev, taxiComplete: true }))
         setTimestamps(prev => ({ ...prev, taxiComplete: formatTimeKorean(new Date()) }))
-      }, 1500)
+      }, 800)
 
-      // Show taxi moving message right after taxi complete (after 1.8 seconds total)
+      // Show taxi moving message after 2 seconds total
       const taxiMovingTimer = setTimeout(() => {
         setShowMessages(prev => ({ ...prev, taxiMoving: true }))
         setTimestamps(prev => ({ ...prev, taxiMoving: formatTimeKorean(new Date()) }))
-      }, 1800)
+      }, 2000)
 
       return () => {
         clearTimeout(taxiCompleteTimer)
@@ -205,7 +205,7 @@ export default function FlightCrisisScreenB() {
         <div className="w-[24px] h-[24px]">
           <img src={imgEpBack} alt="back" className="w-full h-full" />
         </div>
-        <p className="text-[14px] font-['Pretendard'] font-semibold text-[#1d1d1f] tracking-[-0.05px]">
+        <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f] tracking-[-0.05px]">
           AI 어시스턴트와 대화중
         </p>
         <div className="w-[24px] h-[24px]">
@@ -214,7 +214,7 @@ export default function FlightCrisisScreenB() {
       </div>
 
       {/* Chat Content */}
-      <div ref={chatContentRef} className="flex-1 overflow-y-auto flex flex-col gap-[12px] pt-[24px] pb-[80px] mt-[88px]" style={{ backgroundColor: '#F9F9FB' }}>
+      <div ref={chatContentRef} className="flex-1 overflow-y-auto flex flex-col gap-[12px] pt-[24px] pb-[128px] mt-[88px]" style={{ backgroundColor: '#F9F9FB' }}>
         {/* Date Divider */}
         <div className="flex gap-[8px] items-center justify-center px-[16px]">
           <div className="flex-1 h-[0.5px] bg-[#d0d0d0]" />
@@ -246,8 +246,9 @@ export default function FlightCrisisScreenB() {
             </div>
 
             {/* Chat Bubble with Recommendation */}
-            <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px]">
-              <p className="text-[13px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
+            {showChatMessage && (
+            <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px] animate-fadeIn w-[90%]">
+              <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
                 택시로 이동하시는게 가장 안전해요<br />지금 바로 호출 할까요?
               </p>
 
@@ -305,6 +306,7 @@ export default function FlightCrisisScreenB() {
               </div>
               )}
             </div>
+            )}
 
             {/* Timestamp */}
             <p className="text-[10px] font-['Pretendard'] font-normal text-[#999999] tracking-[-0.05px]">
@@ -317,8 +319,8 @@ export default function FlightCrisisScreenB() {
         {/* User Message */}
         {showMessages.userMessage && (
         <div className="flex flex-col gap-[6px] items-end animate-fadeIn px-[16px]">
-            <div className="bg-[#007aff] rounded-l-[14px] rounded-br-[14px] px-[16px] py-[12px] flex items-center justify-center max-w-[200px]">
-              <p className="text-[13px] font-['Pretendard'] font-semibold text-white leading-[1.4]">
+            <div className="bg-[#007aff] rounded-l-[14px] rounded-br-[14px] px-[16px] py-[8px] flex items-center justify-center max-w-[200px]">
+              <p className="text-[12px] font-['Pretendard'] font-semibold text-white leading-[1.4]">
                 택시 호출 해줘
               </p>
             </div>
@@ -332,13 +334,13 @@ export default function FlightCrisisScreenB() {
         {showTaxiLoading && (
         <div className="animate-fadeIn px-[16px]">
           <div className="flex flex-col gap-[10px]">
-            <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px] w-full">
-              <p className="text-[13px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
-                택시 호출 진행중...
+            <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px] w-[90%]">
+              <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
+                {completedSteps === 4 ? '택시 호출 완료' : '택시 호출 진행중...'}
               </p>
               <div className="flex flex-col gap-[6px]">
                 <div className="flex gap-[8px] items-center">
-                  <div className="relative shrink-0 size-[20px] flex-shrink-0">
+                  <div className="relative shrink-0 size-[16px] flex-shrink-0">
                     {completedSteps > 0 ? (
                       <img src={imgCheckIcon} alt="check" className="w-full h-full" />
                     ) : (
@@ -350,7 +352,7 @@ export default function FlightCrisisScreenB() {
                   </p>
                 </div>
                 <div className="flex gap-[8px] items-center">
-                  <div className="relative shrink-0 size-[20px] flex-shrink-0">
+                  <div className="relative shrink-0 size-[16px] flex-shrink-0">
                     {completedSteps > 1 ? (
                       <img src={imgCheckIcon} alt="check" className="w-full h-full" />
                     ) : (
@@ -362,7 +364,7 @@ export default function FlightCrisisScreenB() {
                   </p>
                 </div>
                 <div className="flex gap-[8px] items-center">
-                  <div className="relative shrink-0 size-[20px] flex-shrink-0">
+                  <div className="relative shrink-0 size-[16px] flex-shrink-0">
                     {completedSteps > 2 ? (
                       <img src={imgCheckIcon} alt="check" className="w-full h-full" />
                     ) : (
@@ -374,7 +376,7 @@ export default function FlightCrisisScreenB() {
                   </p>
                 </div>
                 <div className="flex gap-[8px] items-center">
-                  <div className="relative shrink-0 size-[20px] flex-shrink-0">
+                  <div className="relative shrink-0 size-[16px] flex-shrink-0">
                     {completedSteps > 3 ? (
                       <img src={imgCheckIcon} alt="check" className="w-full h-full" />
                     ) : (
@@ -398,8 +400,8 @@ export default function FlightCrisisScreenB() {
         {showMessages.taxiComplete && (
         <div className="animate-fadeIn px-[16px]">
           <div className="flex flex-col gap-[10px]">
-            <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px] w-full">
-              <p className="text-[13px] font-['Pretendard'] font-semibold text-[#007aff] leading-[1.4]">
+            <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px] w-[90%]">
+              <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
                 택시 호출 완료
               </p>
               <div className="flex flex-col gap-[8px]">
@@ -407,7 +409,7 @@ export default function FlightCrisisScreenB() {
                   <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f]">
                     차량 정보
                   </p>
-                  <p className="text-[11px] font-['Pretendard'] font-medium text-[#888888]">
+                  <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888]">
                     도요타 크라운 · 백색 · 品川 123 さ 45-67
                   </p>
                 </div>
@@ -449,10 +451,10 @@ export default function FlightCrisisScreenB() {
         {/* Taxi Moving Message */}
         {showMessages.taxiMoving && (
         <div className="animate-fadeIn px-[16px]">
-          <div className="flex flex-col gap-[10px]">
-            <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px] w-full">
-              <p className="text-[13px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
-                나리타 공항으로 이동 중
+          <div className="flex flex-col gap-[6px]">
+            <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px] w-[90%]">
+              <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
+                나리타 공항으로 이동 중<br />도착 5분 전에 다시 안내 드릴께요
               </p>
               <div className="bg-[#f9f9fb] rounded-[10px] p-[10px] flex flex-col gap-[6px]">
                 <div className="flex gap-[8px] items-center justify-between">
@@ -472,9 +474,6 @@ export default function FlightCrisisScreenB() {
                   </p>
                 </div>
               </div>
-              <p className="text-[11px] font-['Pretendard'] font-semibold text-[#007aff]">
-                도착 5분 전에 다시 안내 드릴께요
-              </p>
             </div>
             <p className="text-[10px] font-['Pretendard'] font-normal text-[#999999] tracking-[-0.05px]">
               {timestamps.taxiMoving}

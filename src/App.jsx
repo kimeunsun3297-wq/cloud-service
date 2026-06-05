@@ -31,10 +31,25 @@ export default function App() {
   const [showFlightCrisisScreenB, setShowFlightCrisisScreenB] = useState(false)
   const [selectedPriorities, setSelectedPriorities] = useState(null)
   const [showEmptyScreen, setShowEmptyScreen] = useState(false)
+  const [showNotification, setShowNotification] = useState(false)
+  const [showNotificationText, setShowNotificationText] = useState(false)
 
   useEffect(() => {
     setShowEmptyScreen(false)
-    if (urgency === 'medium' && activeTab === 'rain' && (selectedOption === 'A' || selectedOption === 'B')) {
+    if (urgency === 'low' && activeTab === 'rain' && selectedOption === 'A') {
+      setShowNotification(false)
+      setShowNotificationText(false)
+      const timer1 = setTimeout(() => {
+        setShowNotification(true)
+      }, 2000)
+      const timer2 = setTimeout(() => {
+        setShowNotificationText(true)
+      }, 5000)
+      return () => {
+        clearTimeout(timer1)
+        clearTimeout(timer2)
+      }
+    } else if (urgency === 'medium' && activeTab === 'rain' && (selectedOption === 'A' || selectedOption === 'B')) {
       setShowBudgetCard(false)
       const timer = setTimeout(() => {
         setShowBudgetCard(true)
@@ -42,6 +57,8 @@ export default function App() {
       return () => clearTimeout(timer)
     } else {
       setShowBudgetCard(false)
+      setShowNotification(false)
+      setShowNotificationText(false)
     }
   }, [urgency, activeTab, selectedOption])
 
@@ -62,6 +79,17 @@ export default function App() {
       setShowPushNotificationB(false)
     }
   }, [urgency, highUrgencyTab, selectedOption])
+
+  useEffect(() => {
+    // 중긴박에서 B안을 탭했을 때 프로토타입을 처음부터 시작할 수 있도록 초기화
+    if (urgency === 'medium' && selectedOption === 'B') {
+      setShowLoading(false)
+      setShowBudgetAdjustment(false)
+      setShowPriorityScreen(false)
+      setShowPriorityAnalysis(false)
+      setSelectedPriorities(null)
+    }
+  }, [urgency, selectedOption])
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 p-1 gap-1 overflow-hidden">
@@ -191,13 +219,15 @@ export default function App() {
                   )}
                 </div>
               )}
-              {!showEmptyScreen && ((activeTab === 'rain' && selectedOption === 'A' && urgency === 'low') || (urgency === 'medium' && (selectedOption === 'A' || selectedOption === 'B'))) && !showPushNotification && (
+              {!showEmptyScreen && ((activeTab === 'rain' && selectedOption === 'A' && urgency === 'low' && showNotification) || (urgency === 'medium' && (selectedOption === 'A' || selectedOption === 'B'))) && !showPushNotification && (
                 <>
                   {!showBudgetCard && (
-                    <Notification
-                      title={urgency === 'medium' ? "예산 상황을 점검해 드릴게요" : "30분 뒤 강한 비 예보가 있어요"}
-                      message={urgency === 'medium' ? "잠시만요..." : "근처 실내 장소를 찾아 드릴께요"}
-                    />
+                    <div className="flex flex-col gap-[12px] items-center w-full">
+                      <Notification
+                        title={urgency === 'medium' ? "예산 상황을 점검해 드릴게요" : "30분 뒤 강한 비 예보가 있어요"}
+                        message={urgency === 'medium' ? "잠시만요..." : "근처 실내 장소를 찾아 드릴께요"}
+                      />
+                    </div>
                   )}
                   {showBudgetCard && !showLoading && !showBudgetAdjustment && !showPriorityScreen && (
                     <BudgetCard
