@@ -317,7 +317,7 @@ export default function FlightCrisisScreenB() {
         {/* User Message */}
         {showMessages.userMessage && (
         <div className="flex flex-col gap-[6px] items-end animate-fadeIn px-[16px]">
-            <div className="bg-[#007aff] rounded-[14px] px-[16px] py-[12px] flex items-center justify-center max-w-[200px]">
+            <div className="bg-[#007aff] rounded-l-[14px] rounded-br-[14px] px-[16px] py-[12px] flex items-center justify-center max-w-[200px]">
               <p className="text-[13px] font-['Pretendard'] font-semibold text-white leading-[1.4]">
                 택시 호출 해줘
               </p>
