@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import Lottie from 'lottie-react'
-import aiStarsAnimation from '../assets/animations/ai-stars.json'
 
 const imgOutline = "https://www.figma.com/api/mcp/asset/29941b40-dfd3-42c1-a271-a3ca79579399"
 const imgBatteryEnd = "https://www.figma.com/api/mcp/asset/1bc54fb1-35dd-4f72-8d94-451a7ffd3c8e"
@@ -84,12 +82,10 @@ export default function FlightCrisisScreen() {
     // Show chat bubble after typing animation completes (approximately 2.5 seconds)
     const timer1 = setTimeout(() => {
       setShowMessages(prev => ({ ...prev, chatBubble: true }))
-      // Show message after bubble appears (adjusted for 1.0s animation)
-      setTimeout(() => setShowChatMessage(true), 400)
-      // Show info box after message
-      setTimeout(() => setShowInfoBox(true), 1100)
+      // Show info box after bubble
+      setTimeout(() => setShowInfoBox(true), 700)
       // Show buttons after info box
-      setTimeout(() => setShowChatButtons(true), 1800)
+      setTimeout(() => setShowChatButtons(true), 1400)
     }, 2500)
 
     return () => {
@@ -110,6 +106,7 @@ export default function FlightCrisisScreen() {
 
   // Handle taxi button click - show user message
   const handleTaxiClick = () => {
+    setShowChatMessage(true)
     setShowMessages(prev => ({ ...prev, userMessage: true }))
     setTimestamps(prev => ({ ...prev, userMessage: formatTimeKorean(new Date()) }))
     // Auto show taxi booked after 1.5 seconds
@@ -191,7 +188,7 @@ export default function FlightCrisisScreen() {
         {/* Date Divider */}
         <div className="flex gap-[8px] items-center justify-center px-[16px]">
           <div className="flex-1 h-[0.5px] bg-[#d0d0d0]" />
-          <p className="text-[10px] font-['Pretendard'] font-medium text-[#999999] tracking-[-0.05px] whitespace-nowrap">
+          <p className="text-[10px] font-['Pretendard'] font-normal text-[#999999] tracking-[-0.05px] whitespace-nowrap">
             2026.06.03
           </p>
           <div className="flex-1 h-[0.5px] bg-[#d0d0d0]" />
@@ -199,19 +196,9 @@ export default function FlightCrisisScreen() {
 
         {/* AI Message */}
         {showMessages.initial && (
-        <div className="flex gap-[8px] animate-fadeIn px-[16px]">
-          {/* Avatar */}
-          <div className="w-[32px] h-[32px] flex-shrink-0 rounded-[6px] overflow-hidden">
-            <Lottie
-              animationData={aiStarsAnimation}
-              loop={true}
-              autoplay={true}
-              style={{ width: '100%', height: '100%' }}
-            />
-          </div>
-
+        <div className="animate-fadeIn px-[16px]">
           {/* Message */}
-          <div className="flex flex-col gap-[10px] flex-1">
+          <div className="flex flex-col gap-[10px]">
             <div className="flex flex-col gap-[2px]">
               <p className="text-[15px] font-['Pretendard'] font-bold leading-[1.3] min-h-[40px]">
                 <span className="gradient-text inline-block">
@@ -223,18 +210,16 @@ export default function FlightCrisisScreen() {
                   ))}
                 </span>
               </p>
-              <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
+              <p className="text-[12px] font-['Pretendard'] font-medium text-[#1d1d1f] tracking-[-0.05px]">
                 {displayedSubtitle}
               </p>
             </div>
 
             {/* Chat Bubble with Recommendation */}
             <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px]">
-              {showChatMessage && (
-              <p className="text-[13px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4] animate-fadeIn">
+              <p className="text-[13px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
                 택시로 이동하시는 게<br />가장 안전해요<br />지금 바로 호출 할까요?
               </p>
-              )}
 
               {/* Options */}
               {showInfoBox && (
@@ -242,14 +227,9 @@ export default function FlightCrisisScreen() {
                 {/* Info Box */}
                 <div className="bg-[#f9f9fb] rounded-[10px] p-[10px] flex flex-col gap-[6px]">
                   <div className="flex gap-[12px] items-center justify-between">
-                    <div className="flex gap-[8px] items-center min-w-0">
-                      <div className="w-[18px] h-[18px] flex-shrink-0">
-                        <img src={imgBoxiconsLocation} alt="location" className="w-full h-full" />
-                      </div>
-                      <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
-                        차량 도착
-                      </p>
-                    </div>
+                    <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
+                      차량 도착
+                    </p>
                     <p className="text-[10px] font-['Pretendard'] font-semibold text-[#007aff] tracking-[-0.05px] flex-shrink-0">
                       약 2분 후
                     </p>
@@ -257,14 +237,9 @@ export default function FlightCrisisScreen() {
 
                   {/* Fare */}
                   <div className="flex gap-[12px] items-center justify-between">
-                    <div className="flex gap-[8px] items-center min-w-0">
-                      <div className="w-[18px] h-[18px] flex-shrink-0">
-                        <img src={imgMaterialSymbolsMoneyOutlineRounded} alt="money" className="w-full h-full" />
-                      </div>
-                      <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
-                        예상 요금
-                      </p>
-                    </div>
+                    <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
+                      예상 요금
+                    </p>
                     <p className="text-[10px] font-['Pretendard'] font-semibold text-[#888888] tracking-[-0.05px] flex-shrink-0">
                       ￥65,000
                     </p>
@@ -272,14 +247,9 @@ export default function FlightCrisisScreen() {
 
                   {/* Airport Arrival */}
                   <div className="flex gap-[12px] items-center justify-between">
-                    <div className="flex gap-[8px] items-center min-w-0">
-                      <div className="w-[18px] h-[18px] flex-shrink-0">
-                        <img src={imgGroup} alt="clock" className="w-full h-full" />
-                      </div>
-                      <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
-                        공항 도착 예상
-                      </p>
-                    </div>
+                    <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
+                      공항 도착 예상
+                    </p>
                     <p className="text-[10px] font-['Pretendard'] font-semibold text-[#888888] tracking-[-0.05px] flex-shrink-0">
                       약 35분 후
                     </p>
@@ -307,7 +277,7 @@ export default function FlightCrisisScreen() {
             </div>
 
             {/* Timestamp */}
-            <p className="text-[10px] font-['Pretendard'] font-medium text-[#999999] tracking-[-0.05px]">
+            <p className="text-[10px] font-['Pretendard'] font-normal text-[#999999] tracking-[-0.05px]">
               {timestamps.initial}
             </p>
           </div>
@@ -322,7 +292,7 @@ export default function FlightCrisisScreen() {
                 택시 호출 해줘
               </p>
             </div>
-            <p className="text-[10px] font-['Pretendard'] font-medium text-[#999999] tracking-[-0.05px]">
+            <p className="text-[10px] font-['Pretendard'] font-normal text-[#999999] tracking-[-0.05px]">
               {timestamps.userMessage}
             </p>
           </div>
@@ -330,16 +300,8 @@ export default function FlightCrisisScreen() {
 
         {/* AI Response - Taxi Booked */}
         {showMessages.taxiBooked && (
-        <div className="flex gap-[12px] animate-fadeIn px-[16px]">
-            <div className="w-[32px] h-[32px] flex-shrink-0 rounded-[6px] overflow-hidden">
-              <Lottie
-                animationData={aiStarsAnimation}
-                loop={true}
-                autoplay={true}
-                style={{ width: '100%', height: '100%' }}
-              />
-            </div>
-            <div className="flex flex-col gap-[10px] flex-1">
+        <div className="animate-fadeIn px-[16px]">
+            <div className="flex flex-col gap-[10px]">
               <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px]">
                 <p className="text-[13px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
                   택시 호출 완료 했어요
@@ -364,40 +326,25 @@ export default function FlightCrisisScreen() {
                   {/* Info Box */}
                   <div className="bg-[#f9f9fb] rounded-[10px] p-[10px] flex flex-col gap-[6px]">
                     <div className="flex gap-[12px] items-center justify-between">
-                      <div className="flex gap-[8px] items-center min-w-0">
-                        <div className="w-[18px] h-[18px] flex-shrink-0">
-                          <img src={imgBoxiconsLocation} alt="location" className="w-full h-full" />
-                        </div>
-                        <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
-                          차량 도착
-                        </p>
-                      </div>
+                      <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
+                        차량 도착
+                      </p>
                       <p className="text-[10px] font-['Pretendard'] font-semibold text-[#007aff] tracking-[-0.05px] flex-shrink-0">
                         약 2분 후
                       </p>
                     </div>
                     <div className="flex gap-[12px] items-center justify-between">
-                      <div className="flex gap-[8px] items-center min-w-0">
-                        <div className="w-[18px] h-[18px] flex-shrink-0">
-                          <img src={imgGroup} alt="clock" className="w-full h-full" />
-                        </div>
-                        <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
-                          공항 도착 예상
-                        </p>
-                      </div>
+                      <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
+                        공항 도착 예상
+                      </p>
                       <p className="text-[10px] font-['Pretendard'] font-semibold text-[#888888] tracking-[-0.05px] flex-shrink-0">
                         약 35분 후
                       </p>
                     </div>
                     <div className="flex gap-[12px] items-center justify-between">
-                      <div className="flex gap-[8px] items-center min-w-0">
-                        <div className="w-[18px] h-[18px] flex-shrink-0">
-                          <img src={imgMaterialSymbolsMoneyOutlineRounded} alt="money" className="w-full h-full" />
-                        </div>
-                        <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
-                          예상 요금
-                        </p>
-                      </div>
+                      <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
+                        예상 요금
+                      </p>
                       <p className="text-[10px] font-['Pretendard'] font-semibold text-[#888888] tracking-[-0.05px] flex-shrink-0">
                         ￥65,000
                       </p>
@@ -405,7 +352,7 @@ export default function FlightCrisisScreen() {
                   </div>
                 </div>
               </div>
-              <p className="text-[10px] font-['Pretendard'] font-medium text-[#999999] tracking-[-0.05px]">
+              <p className="text-[10px] font-['Pretendard'] font-normal text-[#999999] tracking-[-0.05px]">
                 {timestamps.taxiBooked}
               </p>
             </div>
@@ -414,16 +361,8 @@ export default function FlightCrisisScreen() {
 
         {/* AI Response - On the way */}
         {showMessages.onTheWay && (
-        <div className="flex gap-[12px] animate-fadeIn px-[16px]">
-            <div className="w-[32px] h-[32px] flex-shrink-0 rounded-[6px] overflow-hidden">
-              <Lottie
-                animationData={aiStarsAnimation}
-                loop={true}
-                autoplay={true}
-                style={{ width: '100%', height: '100%' }}
-              />
-            </div>
-            <div className="flex flex-col gap-[10px] flex-1">
+        <div className="animate-fadeIn px-[16px]">
+            <div className="flex flex-col gap-[10px]">
               <div className="bg-white rounded-[14px] shadow-[2px_4px_6px_rgba(0,0,0,0.05)] p-[12px] flex flex-col gap-[12px]">
                 <p className="text-[13px] font-['Pretendard'] font-semibold text-[#1d1d1f] leading-[1.4]">
                   나리타 공항으로 이동 중
@@ -432,27 +371,17 @@ export default function FlightCrisisScreen() {
                 {/* Info Box */}
                 <div className="bg-[#f9f9fb] rounded-[10px] p-[10px] flex flex-col gap-[6px]">
                   <div className="flex gap-[12px] items-center justify-between">
-                    <div className="flex gap-[8px] items-center min-w-0">
-                      <div className="w-[18px] h-[18px] flex-shrink-0">
-                        <img src={imgBoxiconsLocation} alt="location" className="w-full h-full" />
-                      </div>
-                      <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
-                        공항 도착 예상
-                      </p>
-                    </div>
+                    <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
+                      공항 도착 예상
+                    </p>
                     <p className="text-[10px] font-['Pretendard'] font-semibold text-[#007aff] tracking-[-0.05px] flex-shrink-0">
                       약 32분 후
                     </p>
                   </div>
                   <div className="flex gap-[12px] items-center justify-between">
-                    <div className="flex gap-[8px] items-center min-w-0">
-                      <div className="w-[18px] h-[18px] flex-shrink-0">
-                        <img src={imgGroup} alt="clock" className="w-full h-full" />
-                      </div>
-                      <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
-                        체크인 마감까지
-                      </p>
-                    </div>
+                    <p className="text-[10px] font-['Pretendard'] font-medium text-[#888888] tracking-[-0.05px]">
+                      체크인 마감까지
+                    </p>
                     <p className="text-[10px] font-['Pretendard'] font-semibold text-[#888888] tracking-[-0.05px] flex-shrink-0">
                       약 15분 여유
                     </p>
@@ -463,7 +392,7 @@ export default function FlightCrisisScreen() {
                   도착 5분 전에 다시 안내 드릴께요
                 </p>
               </div>
-              <p className="text-[10px] font-['Pretendard'] font-medium text-[#999999] tracking-[-0.05px]">
+              <p className="text-[10px] font-['Pretendard'] font-normal text-[#999999] tracking-[-0.05px]">
                 {timestamps.onTheWay}
               </p>
             </div>
@@ -477,7 +406,7 @@ export default function FlightCrisisScreen() {
           <img src={imgTablerPlus} alt="plus" className="w-full h-full" />
         </div>
         <div className="flex-1 h-[40px] bg-[#f5f5f5] border border-[#e8e8e8] rounded-[999px] flex items-center px-[14px]">
-          <p className="text-[14px] font-['Pretendard'] font-medium text-[#d0d0d0] tracking-[-0.05px]">
+          <p className="text-[12px] font-['Pretendard'] font-medium text-[#d0d0d0] tracking-[-0.05px]">
             메시지를 입력하세요
           </p>
         </div>

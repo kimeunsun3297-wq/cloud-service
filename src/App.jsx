@@ -68,7 +68,10 @@ export default function App() {
       {/* Urgency Tabs */}
       <div className="flex gap-1.5 w-full max-w-md bg-gray-200 p-1.5 rounded-[20px]">
         <button
-          onClick={() => setUrgency('low')}
+          onClick={() => {
+            setUrgency('low')
+            setSelectedOption('A')
+          }}
           className={`flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-medium transition-all ${
             urgency === 'low'
               ? 'bg-white text-black shadow-md'
@@ -78,7 +81,10 @@ export default function App() {
           저긴박
         </button>
         <button
-          onClick={() => setUrgency('medium')}
+          onClick={() => {
+            setUrgency('medium')
+            setSelectedOption('A')
+          }}
           className={`flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-medium transition-all ${
             urgency === 'medium'
               ? 'bg-white text-black shadow-md'
@@ -88,7 +94,10 @@ export default function App() {
           중긴박
         </button>
         <button
-          onClick={() => setUrgency('high')}
+          onClick={() => {
+            setUrgency('high')
+            setSelectedOption('A')
+          }}
           className={`flex-1 py-2 px-4 rounded-[16px] font-['Pretendard'] text-xs font-medium transition-all ${
             urgency === 'high'
               ? 'bg-white text-black shadow-md'
