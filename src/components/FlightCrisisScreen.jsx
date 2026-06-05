@@ -309,18 +309,13 @@ export default function FlightCrisisScreen() {
 
                 {/* Vehicle Info */}
                 <div className="flex flex-col gap-[24px]">
-                  <div className="flex gap-[8px] items-center">
-                    <div className="w-[18px] h-[18px] flex-shrink-0">
-                      <img src={imgBoxiconsLocation} alt="taxi" className="w-full h-full" />
-                    </div>
-                    <div className="flex flex-col gap-[2px]">
-                      <p className="text-[10px] font-['Pretendard'] font-semibold text-[#1d1d1f]">
-                        차량 정보
-                      </p>
-                      <p className="text-[9px] font-['Pretendard'] font-medium text-[#888888]">
-                        도요타 크라운 · 백색 · 品川 123 さ 45-67
-                      </p>
-                    </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="text-[10px] font-['Pretendard'] font-semibold text-[#1d1d1f]">
+                      차량 정보
+                    </p>
+                    <p className="text-[9px] font-['Pretendard'] font-medium text-[#888888]">
+                      도요타 크라운 · 백색 · 品川 123 さ 45-67
+                    </p>
                   </div>
 
                   {/* Info Box */}

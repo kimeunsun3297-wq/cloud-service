@@ -403,18 +403,13 @@ export default function FlightCrisisScreenB() {
                 택시 호출 완료
               </p>
               <div className="flex flex-col gap-[8px]">
-                <div className="flex gap-[8px] items-start">
-                  <div className="w-[20px] h-[20px] flex-shrink-0 mt-[2px]">
-                    <img src={imgBoxiconsLocation} alt="taxi" className="w-full h-full" />
-                  </div>
-                  <div className="flex flex-col gap-[2px]">
-                    <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f]">
-                      차량 정보
-                    </p>
-                    <p className="text-[11px] font-['Pretendard'] font-medium text-[#888888]">
-                      도요타 크라운 · 백색 · 品川 123 さ 45-67
-                    </p>
-                  </div>
+                <div className="flex flex-col gap-[2px]">
+                  <p className="text-[12px] font-['Pretendard'] font-semibold text-[#1d1d1f]">
+                    차량 정보
+                  </p>
+                  <p className="text-[11px] font-['Pretendard'] font-medium text-[#888888]">
+                    도요타 크라운 · 백색 · 品川 123 さ 45-67
+                  </p>
                 </div>
                 <div className="bg-[#f9f9fb] rounded-[10px] p-[10px] flex flex-col gap-[6px]">
                   <div className="flex gap-[8px] items-center justify-between">
@@ -461,14 +456,9 @@ export default function FlightCrisisScreenB() {
               </p>
               <div className="bg-[#f9f9fb] rounded-[10px] p-[10px] flex flex-col gap-[6px]">
                 <div className="flex gap-[8px] items-center justify-between">
-                  <div className="flex gap-[6px] items-center">
-                    <div className="w-[18px] h-[18px] flex-shrink-0">
-                      <img src={imgBoxiconsLocation} alt="location" className="w-full h-full" />
-                    </div>
-                    <p className="text-[11px] font-['Pretendard'] font-medium text-[#888888]">
-                      공항 도착 예상
-                    </p>
-                  </div>
+                  <p className="text-[11px] font-['Pretendard'] font-medium text-[#888888]">
+                    공항 도착 예상
+                  </p>
                   <p className="text-[11px] font-['Pretendard'] font-semibold text-[#007aff]">
                     약 32분 후
                   </p>
