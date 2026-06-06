@@ -35,12 +35,27 @@ export default function App() {
   const [showNotificationText, setShowNotificationText] = useState(false)
   const [showCompletionText, setShowCompletionText] = useState(false)
 
+  // urgency 변경 시 모든 상태 초기화
   useEffect(() => {
     setShowEmptyScreen(false)
+    setShowBudgetCard(false)
+    setShowLoading(false)
+    setShowBudgetAdjustment(false)
+    setShowPriorityScreen(false)
+    setShowPriorityAnalysis(false)
+    setShowPushNotification(false)
+    setShowFlightCrisisScreen(false)
+    setShowPushNotificationB(false)
+    setShowFlightCrisisScreenB(false)
+    setSelectedPriorities(null)
+    setShowNotification(false)
+    setShowNotificationText(false)
+    setShowCompletionText(false)
+  }, [urgency])
+
+  // 저긴박 시나리오
+  useEffect(() => {
     if (urgency === 'low' && activeTab === 'rain' && (selectedOption === 'A' || selectedOption === 'B')) {
-      setShowNotification(false)
-      setShowNotificationText(false)
-      setShowCompletionText(false)
       const timer1 = setTimeout(() => {
         setShowNotification(true)
       }, 2000)
@@ -55,9 +70,12 @@ export default function App() {
         clearTimeout(timer2)
         clearTimeout(timer3)
       }
-    } else if (urgency === 'medium' && activeTab === 'rain' && (selectedOption === 'A' || selectedOption === 'B')) {
-      setShowBudgetCard(false)
-      setShowCompletionText(false)
+    }
+  }, [urgency, activeTab, selectedOption])
+
+  // 중긴박 시나리오
+  useEffect(() => {
+    if (urgency === 'medium' && activeTab === 'rain' && (selectedOption === 'A' || selectedOption === 'B')) {
       const timer = setTimeout(() => {
         setShowBudgetCard(true)
       }, 2000)
@@ -70,14 +88,6 @@ export default function App() {
         clearTimeout(timer)
         clearTimeout(timer2)
       }
-    } else if (urgency === 'high') {
-      // 고긴박일 때는 showCompletionText를 초기화
-      setShowCompletionText(false)
-    } else {
-      setShowBudgetCard(false)
-      setShowNotification(false)
-      setShowNotificationText(false)
-      setShowCompletionText(false)
     }
   }, [urgency, activeTab, selectedOption])
 
@@ -100,13 +110,15 @@ export default function App() {
   }, [urgency, highUrgencyTab, selectedOption])
 
   useEffect(() => {
-    // 중긴박에서 B안을 탭했을 때 프로토타입을 처음부터 시작할 수 있도록 초기화
-    if (urgency === 'medium' && selectedOption === 'B') {
+    // 중긴박에서 선택지가 변경될 때 마다 상태 초기화
+    if (urgency === 'medium') {
       setShowLoading(false)
       setShowBudgetAdjustment(false)
       setShowPriorityScreen(false)
       setShowPriorityAnalysis(false)
       setSelectedPriorities(null)
+      setShowBudgetCard(false)
+      setShowCompletionText(false)
     }
   }, [urgency, selectedOption])
 
@@ -280,9 +292,9 @@ export default function App() {
                     category="대형 잡화점"
                     distance="도보 4분  · 280m"
                     rating="4.2"
-                    image1="/tokyu-hands-1.jpg"
-                    image2="/tokyu-hands-2.jpg"
-                    image3="/tokyu-hands-3.jpg"
+                    image1={`${import.meta.env.BASE_URL}tokyu-hands-1.jpg`}
+                    image2={`${import.meta.env.BASE_URL}tokyu-hands-2.jpg`}
+                    image3={`${import.meta.env.BASE_URL}tokyu-hands-3.jpg`}
                   />
                 </div>
               )}

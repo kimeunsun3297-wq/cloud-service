@@ -3,9 +3,9 @@ import Lottie from 'lottie-react';
 import aiStarsAnimation from '../assets/animations/ai-stars.json';
 
 const imgMaterialSymbolsStarRounded = "https://www.figma.com/api/mcp/asset/458bbabf-adbb-4ac0-934c-33baf8907576"
-const imgGyukatsu1 = "/gyukatsu1.png"
-const imgGyukatsu2 = "/gyukatsu2.png"
-const imgGyukatsu3 = "/gyukatsu3.png"
+const imgGyukatsu1 = `${import.meta.env.BASE_URL}gyukatsu1.png`
+const imgGyukatsu2 = `${import.meta.env.BASE_URL}gyukatsu2.png`
+const imgGyukatsu3 = `${import.meta.env.BASE_URL}gyukatsu3.png`
 const imgSmLinesBg = "https://www.figma.com/api/mcp/asset/24764da7-0335-48f7-bf69-b211ac6d64b4"
 const imgVector42 = "https://www.figma.com/api/mcp/asset/76f22a73-d81c-4db6-872f-375624f8a293"
 const imgVector41 = "https://www.figma.com/api/mcp/asset/46644aa3-1c70-4cdd-a2e2-6885ee841575"
