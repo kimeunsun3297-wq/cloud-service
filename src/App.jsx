@@ -237,7 +237,7 @@ export default function App() {
 
           {/* Screen */}
           <div className="w-full h-full rounded-[26px] overflow-hidden relative bg-white" style={{
-            backgroundImage: 'url(/background.png)',
+            backgroundImage: `url(${import.meta.env.BASE_URL}background.png)`,
             backgroundSize: '100% 100%',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
