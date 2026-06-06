@@ -34,6 +34,9 @@ export default function App() {
   const [showNotification, setShowNotification] = useState(false)
   const [showNotificationText, setShowNotificationText] = useState(false)
   const [showCompletionText, setShowCompletionText] = useState(false)
+  const [showLowUrgencyComplete, setShowLowUrgencyComplete] = useState(false)
+  const [showMediumUrgencyComplete, setShowMediumUrgencyComplete] = useState(false)
+  const [showHighUrgencyComplete, setShowHighUrgencyComplete] = useState(false)
 
   // urgency 변경 시 모든 상태 초기화
   useEffect(() => {
@@ -47,10 +50,14 @@ export default function App() {
     setShowFlightCrisisScreen(false)
     setShowPushNotificationB(false)
     setShowFlightCrisisScreenB(false)
+    setShowLowUrgencyComplete(false)
+    setShowMediumUrgencyComplete(false)
+    setShowHighUrgencyComplete(false)
     setSelectedPriorities(null)
     setShowNotification(false)
     setShowNotificationText(false)
     setShowCompletionText(false)
+    setShowLowUrgencyComplete(false)
   }, [urgency])
 
   // 저긴박 시나리오
@@ -63,8 +70,8 @@ export default function App() {
         setShowNotificationText(true)
       }, 5000)
       const timer3 = setTimeout(() => {
-        setShowCompletionText(true)
-      }, 6000)
+        setShowLowUrgencyComplete(true)
+      }, 10000)
       return () => {
         clearTimeout(timer1)
         clearTimeout(timer2)
@@ -79,14 +86,8 @@ export default function App() {
       const timer = setTimeout(() => {
         setShowBudgetCard(true)
       }, 2000)
-      const timer2 = setTimeout(() => {
-        if (selectedOption === 'A') {
-          setShowCompletionText(true)
-        }
-      }, 6000)
       return () => {
         clearTimeout(timer)
-        clearTimeout(timer2)
       }
     }
   }, [urgency, activeTab, selectedOption])
@@ -110,6 +111,15 @@ export default function App() {
   }, [urgency, highUrgencyTab, selectedOption])
 
   useEffect(() => {
+    // 저긴박에서 선택지가 변경될 때 마다 상태 초기화
+    if (urgency === 'low') {
+      setShowNotification(false)
+      setShowNotificationText(false)
+      setShowLowUrgencyComplete(false)
+    }
+  }, [urgency, selectedOption])
+
+  useEffect(() => {
     // 중긴박에서 선택지가 변경될 때 마다 상태 초기화
     if (urgency === 'medium') {
       setShowLoading(false)
@@ -119,8 +129,12 @@ export default function App() {
       setSelectedPriorities(null)
       setShowBudgetCard(false)
       setShowCompletionText(false)
+      setShowMediumUrgencyComplete(false)
     }
   }, [urgency, selectedOption])
+
+  // 고긴박 선택지 변경 시 상태 초기화는 urgency 변경 useEffect에서 이미 처리됨
+  // selectedOption 의존성을 제거하여 충돌 방지
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 p-1 gap-1 overflow-hidden">
@@ -222,26 +236,6 @@ export default function App() {
         </button>
       </div>
 
-      {/* Completion Text */}
-      {((urgency === 'low' && activeTab === 'rain' && (selectedOption === 'A' || selectedOption === 'B')) || (urgency === 'medium' && (selectedOption === 'A' || selectedOption === 'B')) || (urgency === 'high' && (selectedOption === 'A' || selectedOption === 'B'))) && (
-        <p className={`text-[11px] font-['Pretendard'] font-medium text-[#999999] px-[16px] text-center transition-all duration-1000 ${
-          showCompletionText && !showBudgetAdjustment && !showLoading && !showPriorityScreen && !showPriorityAnalysis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
-        }`}>
-          수고 하셨습니다.
-          {urgency === 'high' && selectedOption === 'B' ? (
-            <>
-              <br />
-              모든 프로토타입을 완료 하셨습니다.
-            </>
-          ) : urgency !== 'high' || selectedOption !== 'B' ? (
-            <>
-              <br />
-              {urgency === 'low' ? (selectedOption === 'A' ? 'B안을 탭해' : '중긴박의 A안을 탭해') : urgency === 'medium' ? (selectedOption === 'A' ? 'B안을 탭해' : '고긴박의 A안을 탭해') : 'B안을 탭해'} 이어서 진행해 주세요
-            </>
-          ) : null}
-        </p>
-      )}
-
       {/* iPhone Mockup */}
       <div className="relative w-[280px]" style={{ aspectRatio: '375/812' }}>
         {/* iPhone Frame */}
@@ -278,12 +272,12 @@ export default function App() {
                     />
                   )}
                   {showLoading && !showBudgetAdjustment && <LoadingScreen onLoadingComplete={() => setShowBudgetAdjustment(true)} />}
-                  {showBudgetAdjustment && !showPriorityAnalysis && <BudgetAdjustmentScreen selectedPriorities={selectedPriorities} onBack={() => { setShowBudgetAdjustment(false); setShowBudgetCard(false); setShowLoading(false); setTimeout(() => { setShowCompletionText(true); }, 1500); }} />}
+                  {showBudgetAdjustment && !showPriorityAnalysis && <BudgetAdjustmentScreen selectedPriorities={selectedPriorities} onBack={() => { setShowBudgetAdjustment(false); setShowBudgetCard(false); setShowLoading(false); setShowMediumUrgencyComplete(true); }} />}
                   {showPriorityScreen && !showPriorityAnalysis && <PriorityScreen onBack={() => setShowPriorityScreen(false)} onComplete={(priorities) => { setSelectedPriorities(priorities); setShowPriorityAnalysis(true); }} />}
                   {showPriorityAnalysis && <PriorityAnalysisScreen selectedPriorities={selectedPriorities} onComplete={() => { setShowPriorityScreen(false); setShowPriorityAnalysis(false); setShowBudgetAdjustment(true); setTimeout(() => { setShowCompletionText(true); }, 1500); }} />}
                 </>
               )}
-              {activeTab === 'rain' && selectedOption === 'B' && urgency === 'low' && (
+              {activeTab === 'rain' && selectedOption === 'B' && urgency === 'low' && !showLowUrgencyComplete && (
                 <div className="absolute bottom-[80px] w-full flex justify-center">
                   <MapCard
                     title="30분 뒤 강한 비 예보가 있어요"
@@ -317,26 +311,144 @@ export default function App() {
                   />
                 </div>
               )}
-              {showPushNotification && !showFlightCrisisScreen && (
-                <PushNotificationScreen
-                  onTap={() => setShowFlightCrisisScreen(true)}
-                  urgency="high"
-                />
-              )}
               {showFlightCrisisScreen && urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'A' && (
-                <FlightCrisisScreen onComplete={() => { setShowCompletionText(true); }} />
-              )}
-              {showPushNotificationB && !showFlightCrisisScreenB && (
-                <PushNotificationScreen
-                  onTap={() => setShowFlightCrisisScreenB(true)}
-                  urgency="high"
-                />
+                <FlightCrisisScreen onComplete={() => {
+                  setShowCompletionText(true);
+                  setTimeout(() => {
+                    setShowHighUrgencyComplete(true);
+                  }, 2000);
+                }} />
               )}
               {showFlightCrisisScreenB && urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'B' && (
-                <FlightCrisisScreenB onComplete={() => { setShowCompletionText(true); }} />
+                <FlightCrisisScreenB onComplete={() => {
+                  setShowCompletionText(true);
+                  setTimeout(() => {
+                    setShowHighUrgencyComplete(true);
+                  }, 2000);
+                }} />
               )}
             </div>
 
+            {/* Low Urgency Complete Screen - Full Width */}
+            {urgency === 'low' && (
+              <div className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-700 ${showLowUrgencyComplete ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} style={{ backgroundColor: '#F9F9FB' }}>
+                <div className="text-center px-[16px]">
+                  <p className="text-[20px] font-['Pretendard'] font-semibold text-[#1d1d1f] mb-[12px]">
+                    수고 하셨습니다.
+                  </p>
+                  <p className="text-[15px] font-['Pretendard'] font-normal text-[#666666] mb-[40px] leading-[1.5]">
+                    다음 프로토타입을 진행해 주세요.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setShowLowUrgencyComplete(false)
+                      setShowNotification(false)
+                      setShowNotificationText(false)
+                      // 타이머 직접 시작 (자동 재시작)
+                      setTimeout(() => {
+                        setShowNotification(true)
+                      }, 2000)
+                      setTimeout(() => {
+                        setShowNotificationText(true)
+                      }, 5000)
+                      setTimeout(() => {
+                        setShowLowUrgencyComplete(true)
+                      }, 10000)
+                    }}
+                    className="border border-[#d0d0d0] rounded-[24px] px-[32px] py-[12px] text-[15px] font-['Pretendard'] font-medium text-[#666666] hover:bg-[#f5f5f5] transition-all"
+                  >
+                    다시하기
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* High Urgency Push Notification - A option */}
+            {showPushNotification && !showFlightCrisisScreen && (
+              <PushNotificationScreen
+                onTap={() => setShowFlightCrisisScreen(true)}
+                urgency="high"
+              />
+            )}
+
+            {/* High Urgency Push Notification - B option */}
+            {showPushNotificationB && !showFlightCrisisScreenB && (
+              <PushNotificationScreen
+                onTap={() => setShowFlightCrisisScreenB(true)}
+                urgency="high"
+              />
+            )}
+
+            {/* Medium Urgency Complete Screen - Full Width */}
+            {urgency === 'medium' && (
+              <div className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-700 ${showMediumUrgencyComplete ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} style={{ backgroundColor: '#F9F9FB' }}>
+                <div className="text-center px-[16px]">
+                  <p className="text-[20px] font-['Pretendard'] font-semibold text-[#1d1d1f] mb-[12px]">
+                    수고 하셨습니다.
+                  </p>
+                  <p className="text-[15px] font-['Pretendard'] font-normal text-[#666666] mb-[40px] leading-[1.5]">
+                    다음 프로토타입을 진행해 주세요.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setShowMediumUrgencyComplete(false)
+                      setShowBudgetCard(false)
+                      setShowLoading(false)
+                      setShowBudgetAdjustment(false)
+                      setShowPriorityScreen(false)
+                      setShowPriorityAnalysis(false)
+                      setShowCompletionText(false)
+                      setSelectedPriorities(null)
+                      // 타이머 직접 시작 (자동 재시작)
+                      setTimeout(() => {
+                        setShowBudgetCard(true)
+                      }, 2000)
+                      // 중긴박은 "나가기" 버튼을 눌러야만 완료 화면이 나옴 (자동 타이머 없음)
+                    }}
+                    className="border border-[#d0d0d0] rounded-[24px] px-[32px] py-[12px] text-[15px] font-['Pretendard'] font-medium text-[#666666] hover:bg-[#f5f5f5] transition-all"
+                  >
+                    다시하기
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* High Urgency Complete Screen - Full Width */}
+            {urgency === 'high' && (
+              <div className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-700 ${showHighUrgencyComplete ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} style={{ backgroundColor: '#F9F9FB' }}>
+                <div className="text-center px-[16px]">
+                  <p className="text-[20px] font-['Pretendard'] font-semibold text-[#1d1d1f] mb-[12px]">
+                    수고 하셨습니다.
+                  </p>
+                  <p className="text-[15px] font-['Pretendard'] font-normal text-[#666666] mb-[40px] leading-[1.5]">
+                    {selectedOption === 'B' ? '모든 프로토타입이 완료 되었습니다.' : '다음 프로토타입을 진행해 주세요.'}
+                  </p>
+                  <button
+                    onClick={() => {
+                      setShowHighUrgencyComplete(false)
+                      setShowPushNotification(false)
+                      setShowFlightCrisisScreen(false)
+                      setShowPushNotificationB(false)
+                      setShowFlightCrisisScreenB(false)
+                      setShowCompletionText(false)
+                      // 타이머 직접 시작 (자동 재시작)
+                      if (selectedOption === 'A') {
+                        setTimeout(() => {
+                          setShowPushNotification(true)
+                        }, 100)
+                      } else if (selectedOption === 'B') {
+                        setTimeout(() => {
+                          setShowPushNotificationB(true)
+                        }, 100)
+                      }
+                    }}
+                    className="border border-[#d0d0d0] rounded-[24px] px-[32px] py-[12px] text-[15px] font-['Pretendard'] font-medium text-[#666666] hover:bg-[#f5f5f5] transition-all"
+                  >
+                    다시하기
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
