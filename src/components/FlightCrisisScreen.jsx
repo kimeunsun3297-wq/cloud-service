@@ -14,7 +14,7 @@ const imgBoxiconsLocation = "https://www.figma.com/api/mcp/asset/dfc492f6-60ad-4
 const imgMaterialSymbolsMoneyOutlineRounded = "https://www.figma.com/api/mcp/asset/b0eacd9e-6db6-4320-becd-0d5b9a889589"
 const imgGroup = "/tabler_clock.png"
 
-export default function FlightCrisisScreen() {
+export default function FlightCrisisScreen({ onComplete }) {
   const chatContentRef = useRef(null)
 
   const [showMessages, setShowMessages] = useState({
@@ -125,9 +125,22 @@ export default function FlightCrisisScreen() {
         setShowMessages(prev => ({ ...prev, onTheWay: true }))
         setTimestamps(prev => ({ ...prev, onTheWay: formatTimeKorean(new Date()) }))
       }, 1000)
+
       return () => clearTimeout(timer)
     }
   }, [showMessages.taxiBooked, showMessages.onTheWay, formatTimeKorean])
+
+  // Call onComplete callback 5 seconds after on the way message appears
+  useEffect(() => {
+    if (showMessages.onTheWay) {
+      const completeTimer = setTimeout(() => {
+        if (onComplete) {
+          onComplete()
+        }
+      }, 1000)
+      return () => clearTimeout(completeTimer)
+    }
+  }, [showMessages.onTheWay])
 
   // Auto-trigger taxi flow after initial message completes
   useEffect(() => {

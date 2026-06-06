@@ -33,32 +33,51 @@ export default function App() {
   const [showEmptyScreen, setShowEmptyScreen] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
   const [showNotificationText, setShowNotificationText] = useState(false)
+  const [showCompletionText, setShowCompletionText] = useState(false)
 
   useEffect(() => {
     setShowEmptyScreen(false)
-    if (urgency === 'low' && activeTab === 'rain' && selectedOption === 'A') {
+    if (urgency === 'low' && activeTab === 'rain' && (selectedOption === 'A' || selectedOption === 'B')) {
       setShowNotification(false)
       setShowNotificationText(false)
+      setShowCompletionText(false)
       const timer1 = setTimeout(() => {
         setShowNotification(true)
       }, 2000)
       const timer2 = setTimeout(() => {
         setShowNotificationText(true)
       }, 5000)
+      const timer3 = setTimeout(() => {
+        setShowCompletionText(true)
+      }, 6000)
       return () => {
         clearTimeout(timer1)
         clearTimeout(timer2)
+        clearTimeout(timer3)
       }
     } else if (urgency === 'medium' && activeTab === 'rain' && (selectedOption === 'A' || selectedOption === 'B')) {
       setShowBudgetCard(false)
+      setShowCompletionText(false)
       const timer = setTimeout(() => {
         setShowBudgetCard(true)
       }, 2000)
-      return () => clearTimeout(timer)
+      const timer2 = setTimeout(() => {
+        if (selectedOption === 'A') {
+          setShowCompletionText(true)
+        }
+      }, 6000)
+      return () => {
+        clearTimeout(timer)
+        clearTimeout(timer2)
+      }
+    } else if (urgency === 'high') {
+      // 고긴박일 때는 showCompletionText를 초기화
+      setShowCompletionText(false)
     } else {
       setShowBudgetCard(false)
       setShowNotification(false)
       setShowNotificationText(false)
+      setShowCompletionText(false)
     }
   }, [urgency, activeTab, selectedOption])
 
@@ -191,6 +210,26 @@ export default function App() {
         </button>
       </div>
 
+      {/* Completion Text */}
+      {((urgency === 'low' && activeTab === 'rain' && (selectedOption === 'A' || selectedOption === 'B')) || (urgency === 'medium' && (selectedOption === 'A' || selectedOption === 'B')) || (urgency === 'high' && (selectedOption === 'A' || selectedOption === 'B'))) && (
+        <p className={`text-[11px] font-['Pretendard'] font-medium text-[#999999] px-[16px] text-center transition-all duration-1000 ${
+          showCompletionText && !showBudgetAdjustment && !showLoading && !showPriorityScreen && !showPriorityAnalysis ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
+        }`}>
+          수고 하셨습니다.
+          {urgency === 'high' && selectedOption === 'B' ? (
+            <>
+              <br />
+              모든 프로토타입을 완료 하셨습니다.
+            </>
+          ) : urgency !== 'high' || selectedOption !== 'B' ? (
+            <>
+              <br />
+              {urgency === 'low' ? (selectedOption === 'A' ? 'B안을 탭해' : '중긴박의 A안을 탭해') : urgency === 'medium' ? (selectedOption === 'A' ? 'B안을 탭해' : '고긴박의 A안을 탭해') : 'B안을 탭해'} 이어서 진행해 주세요
+            </>
+          ) : null}
+        </p>
+      )}
+
       {/* iPhone Mockup */}
       <div className="relative w-[280px]" style={{ aspectRatio: '375/812' }}>
         {/* iPhone Frame */}
@@ -205,20 +244,6 @@ export default function App() {
           }}>
             {/* Content */}
             <div className={`absolute inset-y-0 ${showEmptyScreen ? 'inset-x-0 flex items-center justify-center' : (showBudgetCard || (urgency === 'high' && (selectedOption === 'A' || selectedOption === 'B'))) ? 'inset-x-0 flex items-start justify-start' : 'flex items-center justify-center inset-x-[16px]'}`}>
-              {showEmptyScreen && (
-                <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-[#ffffff]">
-                  {selectedOption === 'A' && (
-                    <p className="text-[16px] font-['Pretendard'] font-semibold text-[#1d1d1f] text-center px-[32px]">
-                      수고 하셨습니다. B안을 탭해<br />프로토타입을 진행해 주세요.
-                    </p>
-                  )}
-                  {selectedOption === 'B' && (
-                    <p className="text-[16px] font-['Pretendard'] font-semibold text-[#1d1d1f] text-center px-[32px]">
-                      수고 하셨습니다.<br />위에 고긴박의 A안을 탭해<br />프로토타입을 진행해 주세요.
-                    </p>
-                  )}
-                </div>
-              )}
               {!showEmptyScreen && ((activeTab === 'rain' && selectedOption === 'A' && urgency === 'low' && showNotification) || (urgency === 'medium' && (selectedOption === 'A' || selectedOption === 'B'))) && !showPushNotification && (
                 <>
                   {!showBudgetCard && (
@@ -241,9 +266,9 @@ export default function App() {
                     />
                   )}
                   {showLoading && !showBudgetAdjustment && <LoadingScreen onLoadingComplete={() => setShowBudgetAdjustment(true)} />}
-                  {showBudgetAdjustment && !showPriorityAnalysis && <BudgetAdjustmentScreen selectedPriorities={selectedPriorities} onBack={() => { setShowBudgetAdjustment(false); setShowBudgetCard(false); setShowLoading(false); setShowEmptyScreen(true); }} />}
+                  {showBudgetAdjustment && !showPriorityAnalysis && <BudgetAdjustmentScreen selectedPriorities={selectedPriorities} onBack={() => { setShowBudgetAdjustment(false); setShowBudgetCard(false); setShowLoading(false); setTimeout(() => { setShowCompletionText(true); }, 1500); }} />}
                   {showPriorityScreen && !showPriorityAnalysis && <PriorityScreen onBack={() => setShowPriorityScreen(false)} onComplete={(priorities) => { setSelectedPriorities(priorities); setShowPriorityAnalysis(true); }} />}
-                  {showPriorityAnalysis && <PriorityAnalysisScreen selectedPriorities={selectedPriorities} onComplete={() => { setShowPriorityScreen(false); setShowPriorityAnalysis(false); setShowBudgetAdjustment(true); }} />}
+                  {showPriorityAnalysis && <PriorityAnalysisScreen selectedPriorities={selectedPriorities} onComplete={() => { setShowPriorityScreen(false); setShowPriorityAnalysis(false); setShowBudgetAdjustment(true); setTimeout(() => { setShowCompletionText(true); }, 1500); }} />}
                 </>
               )}
               {activeTab === 'rain' && selectedOption === 'B' && urgency === 'low' && (
@@ -287,7 +312,7 @@ export default function App() {
                 />
               )}
               {showFlightCrisisScreen && urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'A' && (
-                <FlightCrisisScreen />
+                <FlightCrisisScreen onComplete={() => { setShowCompletionText(true); }} />
               )}
               {showPushNotificationB && !showFlightCrisisScreenB && (
                 <PushNotificationScreen
@@ -296,7 +321,7 @@ export default function App() {
                 />
               )}
               {showFlightCrisisScreenB && urgency === 'high' && highUrgencyTab === 'flight' && selectedOption === 'B' && (
-                <FlightCrisisScreenB />
+                <FlightCrisisScreenB onComplete={() => { setShowCompletionText(true); }} />
               )}
             </div>
 

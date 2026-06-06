@@ -16,7 +16,7 @@ const imgGroup = "/tabler_clock.png"
 const imgLoadingIcon = "https://www.figma.com/api/mcp/asset/36b0799b-e12e-4dd4-9f1b-e24260df09b3"
 const imgCheckIcon = "https://www.figma.com/api/mcp/asset/317cf41c-1045-4c9a-a00d-ca9f8d7be64e"
 
-export default function FlightCrisisScreenB() {
+export default function FlightCrisisScreenB({ onComplete }) {
   const chatContentRef = useRef(null)
 
   const [showMessages, setShowMessages] = useState({
@@ -171,6 +171,18 @@ export default function FlightCrisisScreenB() {
       }
     }
   }, [completedSteps, showMessages.taxiMoving])
+
+  // Call onComplete callback 5 seconds after taxi moving message appears
+  useEffect(() => {
+    if (showMessages.taxiMoving) {
+      const completeTimer = setTimeout(() => {
+        if (onComplete) {
+          onComplete()
+        }
+      }, 1000)
+      return () => clearTimeout(completeTimer)
+    }
+  }, [showMessages.taxiMoving])
 
 
   // Handle second action - show on the way message
