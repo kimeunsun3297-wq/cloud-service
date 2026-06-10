@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react'
 import Lottie from 'lottie-react'
 import aiStarsAnimation from '../assets/animations/ai-stars.json'
+import { imgRightSide } from '../utils/statusBarIcons'
 
 const title = "지출 데이터 분석 및 예산 조정 중"
 const description = "잠시만 기다려 주세요"
 
 const imgNotch = "https://www.figma.com/api/mcp/asset/c5f98a3f-f116-4789-9859-4de4b684e7be"
-const imgOutline = "https://www.figma.com/api/mcp/asset/1a667a2c-3974-43f9-bf83-97e748251fc0"
-const imgBatteryEnd = "https://www.figma.com/api/mcp/asset/7052a3a5-451b-47ef-a9ba-a92a05a28b9c"
-const imgFill = "https://www.figma.com/api/mcp/asset/01078b3d-ea30-429c-8408-b24409b19bea"
-const imgWifi = "https://www.figma.com/api/mcp/asset/44069fdc-9066-4108-9da1-2f7ef2399ac7"
-const imgIconMobileSignal = "https://www.figma.com/api/mcp/asset/d97113f8-b82e-4d7f-b5dc-8a9ab23a8081"
 
 export default function LoadingScreen({ onLoadingComplete }) {
   const [displayedTitle, setDisplayedTitle] = useState('')
@@ -59,20 +55,8 @@ export default function LoadingScreen({ onLoadingComplete }) {
       {/* Status Bar */}
       <div className="absolute top-0 left-0 right-0 w-full h-[32px] bg-transparent flex items-center justify-between px-[16px]">
         <p className="text-[11px] font-semibold text-black leading-[14px] tracking-[-0.23px]">9:41</p>
-        <div className="flex gap-[3px] items-center">
-          <div className="w-[12px] h-[9px]">
-            <img src={imgIconMobileSignal} alt="signal" className="w-full h-full" />
-          </div>
-          <div className="w-[11px] h-[8px]">
-            <img src={imgWifi} alt="wifi" className="w-full h-full" />
-          </div>
-          <div className="w-[19px] h-[9px] flex items-center gap-[1px]">
-            <div className="flex-1 h-full relative">
-              <img src={imgOutline} alt="battery-outline" className="absolute inset-0 w-full h-full" />
-              <img src={imgFill} alt="battery-fill" className="absolute inset-0 w-[calc(100%-3px)] h-[calc(100%-2px)] left-[1.5px] top-[1px]" />
-            </div>
-            <img src={imgBatteryEnd} alt="battery-end" className="w-[1px] h-[3px]" />
-          </div>
+        <div className="w-[50px] h-[9px]">
+          <img src={imgRightSide} alt="status-bar" className="w-full h-full" />
         </div>
       </div>
 

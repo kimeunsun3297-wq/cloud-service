@@ -1,15 +1,11 @@
 import { useState, useEffect } from 'react'
+import { imgRightSide } from '../utils/statusBarIcons'
+import { aiIcon } from '../utils/icons'
 
 const imgMakiArrow = "https://www.figma.com/api/mcp/asset/45d2fa41-198a-4cab-991a-37283ae0985a"
-const imgRemainingBudget = "https://www.figma.com/api/mcp/asset/f39c088a-2156-4f4d-addf-af0400908d1c"
-const imgDailyAverage = "https://www.figma.com/api/mcp/asset/134a2188-dad9-44c7-ab67-cedbcc73b8f0"
-const imgBudgetStability = "https://www.figma.com/api/mcp/asset/9e2998c1-b97b-4913-918f-3aed9399f7cb"
-const imgOutline = "https://www.figma.com/api/mcp/asset/b3d499bc-110a-4195-ba67-431723a65b15"
-const imgBatteryEnd = "https://www.figma.com/api/mcp/asset/53955dd7-92d1-41b0-870b-f31078232286"
-const imgFill = "https://www.figma.com/api/mcp/asset/7d1ea2ec-6295-4155-bb90-8ef46c3ca267"
-const imgWifi = "https://www.figma.com/api/mcp/asset/cd3652d4-88a4-47c7-9fda-6e6eb4015e0a"
-const imgIconMobileSignal = "https://www.figma.com/api/mcp/asset/344b0bab-311f-47a6-aa44-c9e9dcef2205"
-const imgAiFillIcon = "https://www.figma.com/api/mcp/asset/8fcd2d4b-3f25-4c68-85dd-aa6539833633"
+const imgRemainingBudget = `data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='40' height='40' rx='20' fill='%23007AFF' fill-opacity='0.15'/%3E%3Cpath d='M20 21C18.6739 21 17.4021 20.4732 16.4645 19.5355C15.5268 18.5979 15 17.3261 15 16H17C17 16.7956 17.3161 17.5587 17.8787 18.1213C18.4413 18.6839 19.2044 19 20 19C20.7956 19 21.5587 18.6839 22.1213 18.1213C22.6839 17.5587 23 16.7956 23 16H25C25 17.3261 24.4732 18.5979 23.5355 19.5355C22.5979 20.4732 21.3261 21 20 21ZM20 11C20.7956 11 21.5587 11.3161 22.1213 11.8787C22.6839 12.4413 23 13.2044 23 14H17C17 13.2044 17.3161 12.4413 17.8787 11.8787C18.4413 11.3161 19.2044 11 20 11ZM27 14H25C25 13.3434 24.8707 12.6932 24.6194 12.0866C24.3681 11.48 23.9998 10.9288 23.5355 10.4645C23.0712 10.0002 22.52 9.63188 21.9134 9.3806C21.3068 9.12933 20.6566 9 20 9C18.6739 9 17.4021 9.52678 16.4645 10.4645C15.5268 11.4021 15 12.6739 15 14H13C11.89 14 11 14.89 11 16V28C11 28.5304 11.2107 29.0391 11.5858 29.4142C11.9609 29.7893 12.4696 30 13 30H27C27.5304 30 28.0391 29.7893 28.4142 29.4142C28.7893 29.0391 29 28.5304 29 28V16C29 15.4696 28.7893 14.9609 28.4142 14.5858C28.0391 14.2107 27.5304 14 27 14Z' fill='%23007AFF'/%3E%3C/svg%3E`
+const imgDailyAverage = `data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='40' height='40' rx='20' fill='%23007AFF' fill-opacity='0.15'/%3E%3Cpath d='M26 19H14V14H26M24.5 25C24.1022 25 23.7206 24.842 23.4393 24.5607C23.158 24.2794 23 23.8978 23 23.5C23 23.1022 23.158 22.7206 23.4393 22.4393C23.7206 22.158 24.1022 22 24.5 22C24.8978 22 25.2794 22.158 25.5607 22.4393C25.842 22.7206 26 23.1022 26 23.5C26 23.8978 25.842 24.2794 25.5607 24.5607C25.2794 24.842 24.8978 25 24.5 25ZM15.5 25C15.1022 25 14.7206 24.842 14.4393 24.5607C14.158 24.2794 14 23.8978 14 23.5C14 23.1022 14.158 22.7206 14.4393 22.4393C14.7206 22.158 15.1022 22 15.5 22C15.8978 22 16.2794 22.158 16.5607 22.4393C16.842 22.7206 17 23.1022 17 23.5C17 23.8978 16.842 24.2794 16.5607 24.5607C16.2794 24.842 15.8978 25 15.5 25ZM12 24C12 24.88 12.39 25.67 13 26.22V28C13 28.2652 13.1054 28.5196 13.2929 28.7071C13.4804 28.8946 13.7348 29 14 29H15C15.2652 29 15.5196 28.8946 15.7071 28.7071C15.8946 28.5196 16 28.2652 16 28V27H24V28C24 28.2652 24.1054 28.5196 24.2929 28.7071C24.4804 28.8946 24.7348 29 25 29H26C26.2652 29 26.5196 28.8946 26.7071 28.7071C26.8946 28.5196 27 28.2652 27 28V26.22C27.61 25.67 28 24.88 28 24V14C28 10.5 24.42 10 20 10C15.58 10 12 10.5 12 14V24Z' fill='%23007AFF'/%3E%3C/svg%3E`
+const imgBudgetStability = `data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='40' height='40' rx='20' fill='%23007AFF' fill-opacity='0.15'/%3E%3Cpath d='M13 17.5C11.9 17.5 11 18.4 11 19.5C11 20.6 11.9 21.5 13 21.5C14.1 21.5 15 20.6 15 19.5C15 18.4 14.1 17.5 13 17.5ZM27 17.5C25.9 17.5 25 18.4 25 19.5C25 20.6 25.9 21.5 27 21.5C28.1 21.5 29 20.6 29 19.5C29 18.4 28.1 17.5 27 17.5ZM20 17.5C18.9 17.5 18 18.4 18 19.5C18 20.6 18.9 21.5 20 21.5C21.1 21.5 22 20.6 22 19.5C22 18.4 21.1 17.5 20 17.5Z' fill='%23007AFF'/%3E%3C/svg%3E`
 
 export default function BudgetAdjustmentScreen({ onBack, selectedPriorities }) {
   const [animateDonut, setAnimateDonut] = useState(false)
@@ -44,20 +40,8 @@ export default function BudgetAdjustmentScreen({ onBack, selectedPriorities }) {
       {/* Status Bar */}
       <div className="absolute top-0 left-0 right-0 w-full h-[32px] bg-transparent flex items-center justify-between px-[16px]">
         <p className="text-[11px] font-semibold text-black leading-[14px] tracking-[-0.23px]">9:41</p>
-        <div className="flex gap-[3px] items-center">
-          <div className="w-[12px] h-[9px]">
-            <img src={imgIconMobileSignal} alt="signal" className="w-full h-full" />
-          </div>
-          <div className="w-[11px] h-[8px]">
-            <img src={imgWifi} alt="wifi" className="w-full h-full" />
-          </div>
-          <div className="w-[19px] h-[9px] flex items-center gap-[1px]">
-            <div className="flex-1 h-full relative">
-              <img src={imgOutline} alt="battery-outline" className="absolute inset-0 w-full h-full" />
-              <img src={imgFill} alt="battery-fill" className="absolute inset-0 w-[calc(100%-3px)] h-[calc(100%-2px)] left-[1.5px] top-[1px]" />
-            </div>
-            <img src={imgBatteryEnd} alt="battery-end" className="w-[1px] h-[3px]" />
-          </div>
+        <div className="w-[50px] h-[9px]">
+          <img src={imgRightSide} alt="status-bar" className="w-full h-full" />
         </div>
       </div>
 
@@ -215,7 +199,7 @@ export default function BudgetAdjustmentScreen({ onBack, selectedPriorities }) {
           <div className="flex gap-[4px] items-center mb-[8px]">
             <div className="bg-gradient-to-r from-[#007aff] to-[#fa6aff] px-[8px] py-[4px] rounded-[4px] flex items-center gap-[3px]">
               <div className="w-[12px] h-[12px] flex-shrink-0">
-                <img src={imgAiFillIcon} alt="ai" className="w-full h-full" />
+                <img src={aiIcon} alt="ai" className="w-full h-full" />
               </div>
               <p className="text-[10px] font-['Pretendard'] font-semibold text-white">
                 AI 추천

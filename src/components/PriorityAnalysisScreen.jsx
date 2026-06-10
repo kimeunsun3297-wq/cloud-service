@@ -1,11 +1,5 @@
 import { useState, useEffect } from 'react'
-
-const imgNotch = "https://www.figma.com/api/mcp/asset/aa5d9dbe-9392-47e8-813e-a3c8404a1745"
-const imgOutline = "https://www.figma.com/api/mcp/asset/ce63cd92-bbfe-4f43-819c-84403d665f76"
-const imgBatteryEnd = "https://www.figma.com/api/mcp/asset/9560e401-14d6-4b17-8fbb-357555b7616a"
-const imgFill = "https://www.figma.com/api/mcp/asset/cbc01f4d-8359-469c-a30d-34fc3d355e7a"
-const imgWifi = "https://www.figma.com/api/mcp/asset/e8091da2-d876-4d33-b1ea-37854e449444"
-const imgIconMobileSignal = "https://www.figma.com/api/mcp/asset/6e6e7695-113c-45bf-a1c4-5564bd96abaa"
+import { imgRightSide } from '../utils/statusBarIcons'
 const imgEllipse3 = "https://www.figma.com/api/mcp/asset/af6c2304-e420-4ee6-9010-dac27343f1a7"
 const imgGroup = "https://www.figma.com/api/mcp/asset/8c0a5e74-0051-4b14-a8ee-46135cc38ca3"
 const imgSubwayCoin = "https://www.figma.com/api/mcp/asset/a92db021-e203-4767-9b7f-26e4ed2705ac"
@@ -77,20 +71,8 @@ export default function PriorityAnalysisScreen({ onComplete, selectedPriorities 
       {/* Status Bar */}
       <div className="absolute top-0 left-0 right-0 w-full h-[32px] bg-transparent flex items-center justify-between px-[16px]">
         <p className="text-[11px] font-semibold text-black leading-[14px] tracking-[-0.23px]">9:41</p>
-        <div className="flex gap-[3px] items-center">
-          <div className="w-[12px] h-[9px]">
-            <img src={imgIconMobileSignal} alt="signal" className="w-full h-full" />
-          </div>
-          <div className="w-[11px] h-[8px]">
-            <img src={imgWifi} alt="wifi" className="w-full h-full" />
-          </div>
-          <div className="w-[19px] h-[9px] flex items-center gap-[1px]">
-            <div className="flex-1 h-full relative">
-              <img src={imgOutline} alt="battery-outline" className="absolute inset-0 w-full h-full" />
-              <img src={imgFill} alt="battery-fill" className="absolute inset-0 w-[calc(100%-3px)] h-[calc(100%-2px)] left-[1.5px] top-[1px]" />
-            </div>
-            <img src={imgBatteryEnd} alt="battery-end" className="w-[1px] h-[3px]" />
-          </div>
+        <div className="w-[50px] h-[9px]">
+          <img src={imgRightSide} alt="status-bar" className="w-full h-full" />
         </div>
       </div>
 

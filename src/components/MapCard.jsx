@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Lottie from 'lottie-react';
 import aiStarsAnimation from '../assets/animations/ai-stars.json';
-
-const imgMaterialSymbolsStarRounded = "https://www.figma.com/api/mcp/asset/458bbabf-adbb-4ac0-934c-33baf8907576"
+import { starIcon } from '../utils/icons'
 const imgGyukatsu1 = `${import.meta.env.BASE_URL}gyukatsu1.png`
 const imgGyukatsu2 = `${import.meta.env.BASE_URL}gyukatsu2.png`
 const imgGyukatsu3 = `${import.meta.env.BASE_URL}gyukatsu3.png`
@@ -127,7 +126,7 @@ export default function MapCard({
                   <span className="text-[#a0a0a0]">·</span>
                   <p className="font-['Pretendard'] font-medium text-[#a0a0a0] whitespace-nowrap text-ellipsis overflow-hidden">{category}</p>
                   <div className="relative shrink-0 size-[10px]">
-                    <img alt="star" src={imgMaterialSymbolsStarRounded} className="absolute inset-0 block max-w-none w-full h-full" />
+                    <img alt="star" src={starIcon} className="absolute inset-0 block max-w-none w-full h-full" />
                   </div>
                   <p className="font-['Pretendard'] font-medium text-[#a0a0a0] whitespace-nowrap text-ellipsis overflow-hidden">{rating}</p>
                 </div>
