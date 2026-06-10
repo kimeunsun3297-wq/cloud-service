@@ -6,13 +6,7 @@ const imgMaterialSymbolsStarRounded = "https://www.figma.com/api/mcp/asset/458bb
 const imgGyukatsu1 = `${import.meta.env.BASE_URL}gyukatsu1.png`
 const imgGyukatsu2 = `${import.meta.env.BASE_URL}gyukatsu2.png`
 const imgGyukatsu3 = `${import.meta.env.BASE_URL}gyukatsu3.png`
-const imgSmLinesBg = "https://www.figma.com/api/mcp/asset/24764da7-0335-48f7-bf69-b211ac6d64b4"
-const imgVector42 = "https://www.figma.com/api/mcp/asset/76f22a73-d81c-4db6-872f-375624f8a293"
-const imgVector41 = "https://www.figma.com/api/mcp/asset/46644aa3-1c70-4cdd-a2e2-6885ee841575"
-const imgVector43 = "https://www.figma.com/api/mcp/asset/6ebfaa39-acea-4850-8a13-da48c72058f1"
-const imgVector43Stroke = "https://www.figma.com/api/mcp/asset/4e03cfed-ca25-4842-a3a3-c9410bd4c249"
-const imgVector = "https://www.figma.com/api/mcp/asset/fa142e63-880b-48cc-a294-4c4e13eeb379"
-const imgFrame = "https://www.figma.com/api/mcp/asset/78fd79c7-6895-4ce9-a5f5-baaa2c2967a7"
+const imgMapImage = `${import.meta.env.BASE_URL}map-image.svg`
 
 export default function MapCard({
   title = "30분 뒤 강한 비 예보가 있어요",
@@ -145,61 +139,7 @@ export default function MapCard({
 
       {/* Map Section */}
       <div className={`${mapExpanded ? 'h-[157px]' : 'h-0'} overflow-clip relative shrink-0 w-full bg-[#f0f0f0] transition-all duration-1000 ease-out`}>
-        <div className="absolute w-full h-full left-0 right-0 top-0">
-          <div className="absolute bg-[#f0f0f0] h-[838.425px] left-0 overflow-clip top-[-291.21px] w-[248px]">
-            <div className="absolute h-[290.19px] left-[0.14px] top-[280.93px] w-[295.744px]">
-              <div className="absolute inset-[0_0.16%_0.9%_0.56%]">
-                <img alt="vector42" className="block max-w-none w-full h-full" src={imgVector42} />
-              </div>
-            </div>
-            <div className="absolute h-[871.032px] left-[-208.59px] top-[-2.78px] w-[830.766px]">
-              <div className="absolute inset-[-0.36%_-0.38%_-0.2%_-0.38%]">
-                <img alt="map-grid" className="block max-w-none w-full h-full" src={imgSmLinesBg} />
-              </div>
-            </div>
-            <div className="absolute h-[871.032px] left-[-208.59px] top-[-2.78px] w-[830.766px]" />
-            <div className="absolute h-[263.809px] left-[-208.59px] top-[574.36px] w-[836.783px]">
-              <div className="absolute inset-[0_0_21.36%_0]">
-                <img alt="vector41" className="block max-w-none w-full h-full" src={imgVector41} />
-              </div>
-            </div>
-            <div className="absolute h-[853.445px] left-[-210.44px] top-[-1.85px] w-[842.337px]">
-              <div className="absolute h-full w-full left-0 top-0">
-                <div className="absolute inset-[-0.52%_-0.34%_-0.71%_-0.32%]">
-                  <img alt="vector43" className="block max-w-none w-full h-full" src={imgVector43} />
-                </div>
-              </div>
-
-              {/* Route Elements - Show when map is expanded */}
-              {mapExpanded && (
-                <>
-                  {/* Route Path Line */}
-                  <div className="absolute h-[144.127px] left-[322.67px] top-[350.75px] w-[139.489px] fade-in-up">
-                    <div className="absolute inset-[-3.25%_-3.36%]">
-                      <img alt="route-path" className="block max-w-none w-full h-full" src={imgVector43Stroke} />
-                    </div>
-                  </div>
-
-                  {/* Start Point */}
-                  <div className="absolute inset-[38.44%_59.61%_57.92%_37.33%] fade-in-up" style={{ animationDelay: '0.1s' }}>
-                    <img alt="start-point" className="absolute block inset-0 max-w-none w-full h-full" src={imgVector} />
-                  </div>
-
-                  {/* Destination Point */}
-                  <div className="absolute flex items-center justify-center left-[420px] size-[53.84px] top-[460px] fade-in-up" style={{ animationDelay: '0.2s' }}>
-                    <div className="flex-none rotate-0">
-                      <div className="relative size-[42.105px]">
-                        <div className="absolute inset-[-23.52%]">
-                          <img alt="destination-point" className="block max-w-none w-full h-full" src={imgFrame} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+        <img alt="map" className="absolute inset-0 w-full h-full object-cover" src={imgMapImage} />
       </div>
 
       {/* Bottom Section - Buttons */}
