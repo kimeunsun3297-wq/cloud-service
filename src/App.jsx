@@ -422,7 +422,7 @@ export default function App() {
                     수고 하셨습니다.
                   </p>
                   <p className="text-[15px] font-['Pretendard'] font-normal text-[#666666] mb-[40px] leading-[1.5]">
-                    {selectedOption === 'B' ? '모든 프로토타입이 완료 되었습니다.' : '다음 프로토타입을 진행해 주세요.'}
+                    {selectedOption === 'B' ? '모든 프로토타입이 완료 되었습니다.' : 'B안을 탭해 이어서 진행해 주세요.'}
                   </p>
                   <button
                     onClick={() => {
