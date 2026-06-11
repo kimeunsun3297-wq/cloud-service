@@ -9,6 +9,7 @@ import PriorityAnalysisScreen from './components/PriorityAnalysisScreen'
 import FlightCrisisScreen from './components/FlightCrisisScreen'
 import FlightCrisisScreenB from './components/FlightCrisisScreenB'
 import PushNotificationScreen from './components/PushNotificationScreen'
+import './utils/imageFallback'
 
 const img20260531332022 = "https://www.figma.com/api/mcp/asset/6db77f7d-e5bb-40f6-8075-b7bb53efc517"
 const img20260531345061 = "/store-image.png"
